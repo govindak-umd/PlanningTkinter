@@ -54,6 +54,7 @@ class Graph:
         key_list = list(self.graph_dict.keys())
         return key_list
 
+    # Returns the neighbours of the node
     def getNeighbors(self, node):
         key_list = list(self.graph_dict.keys())
         if checkinThis(node, key_list):
