@@ -4,6 +4,7 @@ from maps_utils import border_size
 from maps_utils import Obstacles
 from map import map_canvas
 from maps_utils import Node
+from maps_utils import resolution
 
 
 # Function to compare nodes
@@ -95,38 +96,38 @@ def generateGraph():
 
                     # Checking for the child node to not be in a
                     # boundary / obstacle
-                    b = map_canvas[x_range, y_range - 1][0]
-                    g = map_canvas[x_range, y_range - 1][1]
-                    r = map_canvas[x_range, y_range - 1][2]
+                    b = map_canvas[x_range, y_range - resolution][0]
+                    g = map_canvas[x_range, y_range - resolution][1]
+                    r = map_canvas[x_range, y_range - resolution][2]
                     if b != 0 and g != 0 and r != 0:
-                        node_top = Node(x_range, y_range - 1)
+                        node_top = Node(x_range, y_range - resolution)
                         graph_dic[node].append(node_top)
 
                     # Checking for the child node to not be in a
                     # boundary / obstacle
-                    b = map_canvas[x_range, y_range + 1][0]
-                    g = map_canvas[x_range, y_range + 1][1]
-                    r = map_canvas[x_range, y_range + 1][2]
+                    b = map_canvas[x_range, y_range + resolution][0]
+                    g = map_canvas[x_range, y_range + resolution][1]
+                    r = map_canvas[x_range, y_range + resolution][2]
                     if b != 0 and g != 0 and r != 0:
-                        node_below = Node(x_range, y_range + 1)
+                        node_below = Node(x_range, y_range + resolution)
                         graph_dic[node].append(node_below)
 
                     # Checking for the child node to not be in a
                     # boundary / obstacle
-                    b = map_canvas[x_range + 1, y_range][0]
-                    g = map_canvas[x_range + 1, y_range][1]
-                    r = map_canvas[x_range + 1, y_range][2]
+                    b = map_canvas[x_range + resolution, y_range][0]
+                    g = map_canvas[x_range + resolution, y_range][1]
+                    r = map_canvas[x_range + resolution, y_range][2]
                     if b != 0 and g != 0 and r != 0:
-                        node_right = Node(x_range + 1, y_range)
+                        node_right = Node(x_range + resolution, y_range)
                         graph_dic[node].append(node_right)
 
                     # Checking for the child node to not be in a
                     # boundary / obstacle
-                    b = map_canvas[x_range - 1, y_range][0]
-                    g = map_canvas[x_range - 1, y_range][1]
-                    r = map_canvas[x_range - 1, y_range][2]
+                    b = map_canvas[x_range - resolution, y_range][0]
+                    g = map_canvas[x_range - resolution, y_range][1]
+                    r = map_canvas[x_range - resolution, y_range][2]
                     if b != 0 and g != 0 and r != 0:
-                        node_left = Node(x_range - 1, y_range)
+                        node_left = Node(x_range - resolution, y_range)
                         graph_dic[node].append(node_left)
 
             # When obstacles are NOT present
@@ -137,16 +138,16 @@ def generateGraph():
                 graph_dic[node] = []
 
                 # Child Nodes
-                node_left = Node(x_range - 1, y_range)
+                node_left = Node(x_range - resolution, y_range)
                 graph_dic[node].append(node_left)
 
-                node_right = Node(x_range + 1, y_range)
+                node_right = Node(x_range + resolution, y_range)
                 graph_dic[node].append(node_right)
 
-                node_below = Node(x_range, y_range + 1)
+                node_below = Node(x_range, y_range + resolution)
                 graph_dic[node].append(node_below)
 
-                node_top = Node(x_range, y_range - 1)
+                node_top = Node(x_range, y_range - resolution)
                 graph_dic[node].append(node_top)
     # Assigning the graph with all the connections
     graph_img = Graph(graph_dic)
