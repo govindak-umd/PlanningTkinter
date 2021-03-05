@@ -17,12 +17,11 @@ class DFS:
         self.goal_node = goal_node
 
     def startSolving(self):
+        # Declaring a set to save the visited nodes
         visited = set()
+        # Adding the start node
+        visited.add(self.start_node)
 
-        vertices = self.graph.getVertices()
-        for node in vertices:
-            if compareNodes(node, node_start):
-                print('Node found')
 
 
 if __name__ == "__main__":

@@ -15,6 +15,14 @@ def compareNodes(node_1, node_2):
         return False
 
 
+# Checks if a node is there in a set
+def checkinVisited(node_to_check, set_to_check_in):
+    for node in set_to_check_in:
+        if compareNodes(node, node_to_check):
+            return True
+    return False
+
+
 # Graph Class
 class Graph:
     def __init__(self, graph_dict):
