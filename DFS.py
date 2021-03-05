@@ -1,16 +1,10 @@
 import cv2
-from maps_utils import map_size
-from maps_utils import border_size
-import numpy as np
 from map import map_canvas
-import time
 from graph import graph_generated
-from graph import Node
 from graph import checkinThis
-from graph import checkinGraph
-from graph import printNode
-from graph import getSameNode
 from graph import compareNodes
+from map import mouse_start_node
+from map import mouse_goal_node
 
 
 class DFS:
@@ -47,7 +41,7 @@ class DFS:
 
 
 if __name__ == "__main__":
-    node_start = Node(200, 15)
-    node_goal = Node(234, 400)
+    node_start = mouse_start_node
+    node_goal = mouse_goal_node
     dfs = DFS(graph_generated, node_start, node_goal)
     dfs.solveDFS(node_start)

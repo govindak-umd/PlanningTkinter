@@ -2,9 +2,8 @@ import cv2
 from maps_utils import map_size
 from maps_utils import border_size
 from maps_utils import Obstacles
-import numpy as np
 from map import map_canvas
-import time
+from maps_utils import Node
 
 
 # Function to compare nodes
@@ -69,13 +68,6 @@ class Graph:
             for val in val_nodes:
                 val_set.add(val)
         return val_set
-
-
-# Node class
-class Node:
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
 
 
 def generateGraph():

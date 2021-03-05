@@ -2,8 +2,13 @@ import cv2
 from maps_utils import map_size
 from maps_utils import border_size
 import numpy as np
+from maps_utils import Node
+from maps_utils import startMessage
 
+startMessage()
 map_canvas = np.zeros((map_size, map_size, 3), np.uint8)
+mouse_start_node = Node(0, 0)
+mouse_goal_node = Node(map_size, map_size)
 
 
 def LoadMap(canvas, border):
@@ -37,17 +42,21 @@ def LoadMap(canvas, border):
 
 def clickMouse(event, x, y, flags, params):
     global map_canvas
+    global mouse_start_node
+    global mouse_goal_node
     if event == cv2.EVENT_LBUTTONDOWN:
         print('Start at (', x, ',', y, ')')
         cv2.circle(map_canvas, (x, y), 1, (0, 0, 255), -1, cv2.LINE_AA)
         # cv2.circle(map_canvas, (x, y), 10, (0, 0, 255), 1, cv2.LINE_AA)
         cv2.imshow("map", map_canvas)
+        mouse_start_node = Node(y, x)
     if event == cv2.EVENT_RBUTTONDOWN:
         print('Goal at (', x, ',', y, ')')
         map_canvas[x, y] = (0, 255, 0)
         cv2.circle(map_canvas, (x, y), 1, (0, 255, 0), -1, cv2.LINE_AA)
         # cv2.circle(map_canvas, (x, y), 10, (0, 255, 0), 1, cv2.LINE_AA)
         cv2.imshow("map", map_canvas)
+        mouse_goal_node = Node(y, x)
 
 
 # Load the blank canvas
