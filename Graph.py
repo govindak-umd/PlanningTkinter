@@ -1,0 +1,121 @@
+import cv2
+from maps_utils import map_size
+from maps_utils import border_size
+from maps_utils import Obstacles
+import numpy as np
+from map import map_canvas
+import time
+
+
+# Graph Class
+class Graph:
+    def __init__(self, graph_dict):
+        self.graph_dict = graph_dict
+
+    # Returns all the vertices
+    def getVertices(self):
+        key_list = list(self.graph_dict.keys())
+        return key_list
+
+    # Returns all the Edges
+    def getEdges(self):
+        val_set = set()
+        val_node_list = list(self.graph_dict.values())
+        for val_nodes in val_node_list:
+            for val in val_nodes:
+                val_set.add(val)
+        return val_set
+
+
+# Node class
+class Node:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+
+if __name__ == "__main__":
+    print('Generating Graph')
+    graph_dic = {}
+    count = 0
+    for x_range in range(border_size, map_size - border_size + 1):
+        for y_range in range(border_size, map_size - border_size + 1):
+
+            # When obstacles are present
+
+            if Obstacles:
+                # Getting all cell values to check for black cells
+                b = map_canvas[x_range, y_range][0]
+                g = map_canvas[x_range, y_range][1]
+                r = map_canvas[x_range, y_range][2]
+
+                # Adding only white cells into the graph
+                if b != 0 and g != 0 and r != 0:
+                    # Parent Node
+
+                    node = Node(x_range, y_range)
+                    graph_dic[node] = []
+
+                    # Child Nodes
+
+                    # Checking for the child node to not be in a
+                    # boundary / obstacle
+                    b = map_canvas[x_range, y_range - 1][0]
+                    g = map_canvas[x_range, y_range - 1][1]
+                    r = map_canvas[x_range, y_range - 1][2]
+                    if b != 0 and g != 0 and r != 0:
+                        node_top = Node(x_range, y_range - 1)
+                        graph_dic[node].append(node_top)
+
+                    # Checking for the child node to not be in a
+                    # boundary / obstacle
+                    b = map_canvas[x_range, y_range + 1][0]
+                    g = map_canvas[x_range, y_range + 1][1]
+                    r = map_canvas[x_range, y_range + 1][2]
+                    if b != 0 and g != 0 and r != 0:
+                        node_below = Node(x_range, y_range + 1)
+                        graph_dic[node].append(node_below)
+
+                    # Checking for the child node to not be in a
+                    # boundary / obstacle
+                    b = map_canvas[x_range + 1, y_range][0]
+                    g = map_canvas[x_range + 1, y_range][1]
+                    r = map_canvas[x_range + 1, y_range][2]
+                    if b != 0 and g != 0 and r != 0:
+                        node_right = Node(x_range + 1, y_range)
+                        graph_dic[node].append(node_right)
+
+                    # Checking for the child node to not be in a
+                    # boundary / obstacle
+                    b = map_canvas[x_range - 1, y_range][0]
+                    g = map_canvas[x_range - 1, y_range][1]
+                    r = map_canvas[x_range - 1, y_range][2]
+                    if b != 0 and g != 0 and r != 0:
+                        node_left = Node(x_range - 1, y_range)
+                        graph_dic[node].append(node_left)
+
+            # When obstacles are NOT present
+            else:
+                # Parent Node
+
+                node = Node(x_range, y_range)
+                graph_dic[node] = []
+
+                # Child Nodes
+                node_left = Node(x_range - 1, y_range)
+                graph_dic[node].append(node_left)
+
+                node_right = Node(x_range + 1, y_range)
+                graph_dic[node].append(node_right)
+
+                node_below = Node(x_range, y_range + 1)
+                graph_dic[node].append(node_below)
+
+                node_top = Node(x_range, y_range - 1)
+                graph_dic[node].append(node_top)
+
+    # Assigning the graph with all the connections
+    graph = Graph(graph_dic)
+    graph.getVertices()
+    graph.getEdges()
+    print('Graphs updated')

@@ -10,7 +10,7 @@ def LoadMap(canvas, border):
     # Fill image
     for row in range(520):
         for col in range(520):
-            map_canvas[row, col] = (255, 255, 255)
+            canvas[row, col] = (255, 255, 255)
 
     # Top border
     for row in range(border):
@@ -40,13 +40,13 @@ def clickMouse(event, x, y, flags, params):
     if event == cv2.EVENT_LBUTTONDOWN:
         print('Start at (', x, ',', y, ')')
         cv2.circle(map_canvas, (x, y), 1, (0, 0, 255), -1, cv2.LINE_AA)
-        cv2.circle(map_canvas, (x, y), 10, (0, 0, 255), 1, cv2.LINE_AA)
+        # cv2.circle(map_canvas, (x, y), 10, (0, 0, 255), 1, cv2.LINE_AA)
         cv2.imshow("map", map_canvas)
     if event == cv2.EVENT_RBUTTONDOWN:
         print('Goal at (', x, ',', y, ')')
         map_canvas[x, y] = (0, 255, 0)
         cv2.circle(map_canvas, (x, y), 1, (0, 255, 0), -1, cv2.LINE_AA)
-        cv2.circle(map_canvas, (x, y), 10, (0, 255, 0), 1, cv2.LINE_AA)
+        # cv2.circle(map_canvas, (x, y), 10, (0, 255, 0), 1, cv2.LINE_AA)
         cv2.imshow("map", map_canvas)
 
 
