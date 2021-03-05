@@ -16,14 +16,35 @@ def compareNodes(node_1, node_2):
 
 
 # Checks if a node is there in a set
-def checkinVisited(node_to_check, set_to_check_in):
+def checkinThis(node_to_check, set_to_check_in):
     for node in set_to_check_in:
         if compareNodes(node, node_to_check):
             return True
     return False
 
 
+# Checks if a node is there in a set
+def getSameNode(node_to_check, set_to_check_in):
+    for node in set_to_check_in:
+        if compareNodes(node, node_to_check):
+            return node
+    return 0
+
+
+# Checks if a node is there in the graph
+def checkinGraph(node_to_check, graph_to_check_in):
+    graph_keys = list(graph_to_check_in.getVertices())
+    for node in graph_keys:
+        if compareNodes(node, node_to_check):
+            return True
+    return False
+
+
 # Graph Class
+def printNode(node):
+    print('Node is : ', node.x, ',', node.y)
+
+
 class Graph:
     def __init__(self, graph_dict):
         self.graph_dict = graph_dict
@@ -32,6 +53,12 @@ class Graph:
     def getVertices(self):
         key_list = list(self.graph_dict.keys())
         return key_list
+
+    def getNeighbors(self, node):
+        key_list = list(self.graph_dict.keys())
+        if checkinThis(node, key_list):
+            similar_node = getSameNode(node, key_list)
+            return self.graph_dict[similar_node]
 
     # Returns all the Edges
     def getEdges(self):
@@ -128,7 +155,6 @@ def generateGraph():
 
                 node_top = Node(x_range, y_range - 1)
                 graph_dic[node].append(node_top)
-
     # Assigning the graph with all the connections
     graph_img = Graph(graph_dic)
     print('Graphs updated')
