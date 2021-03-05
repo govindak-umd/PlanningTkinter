@@ -7,6 +7,14 @@ from map import map_canvas
 import time
 
 
+# Function to compare nodes
+def compareNodes(node_1, node_2):
+    if (node_1.x == node_2.x) and (node_1.y == node_2.y):
+        return True
+    else:
+        return False
+
+
 # Graph Class
 class Graph:
     def __init__(self, graph_dict):
@@ -34,10 +42,9 @@ class Node:
         self.y = y
 
 
-if __name__ == "__main__":
+def generateGraph():
     print('Generating Graph')
     graph_dic = {}
-    count = 0
     for x_range in range(border_size, map_size - border_size + 1):
         for y_range in range(border_size, map_size - border_size + 1):
 
@@ -115,7 +122,10 @@ if __name__ == "__main__":
                 graph_dic[node].append(node_top)
 
     # Assigning the graph with all the connections
-    graph = Graph(graph_dic)
-    graph.getVertices()
-    graph.getEdges()
+    graph_img = Graph(graph_dic)
     print('Graphs updated')
+    return graph_img
+
+
+# Generating the graph
+graph_generated = generateGraph()
