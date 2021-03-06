@@ -1,5 +1,5 @@
 # Dimension of the square maze
-map_size = 520
+map_size = 250
 # Border thickness of the maze
 border_size = 10
 # Set Obstacles to be True, if the map has
@@ -7,7 +7,7 @@ border_size = 10
 # the borders
 Obstacles = False
 # Radius of the robot moving within the maze
-resolution = 5
+resolution = 10
 # Color of the path traced out by the robot within
 # the maze - for visualization purposes
 path_colour = (200, 25, 25)
