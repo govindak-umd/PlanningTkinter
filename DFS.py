@@ -9,6 +9,7 @@ from maps_utils import path_colour
 from maps_utils import pointEncompassed
 from maps_utils import visited_colour
 
+
 # DFS Class
 class DFS:
 
@@ -38,7 +39,7 @@ class DFS:
             neighbours = self.graph.getNeighbors(start)
             if neighbours is not None:
                 for neighbour in neighbours:
-                    self.count+=1
+                    self.count += 1
                     cv2.imshow("Searching map", map_canvas)
                     if cv2.waitKey(20) & 0xFF == ord('q'):
                         break
