@@ -1,9 +1,5 @@
-from maps_utils import map_size
-from maps_utils import border_size
-from maps_utils import Obstacles
 from map import map_canvas
-from maps_utils import Node
-from maps_utils import resolution
+from maps_utils import Node, resolution, map_size, border_size, Obstacles
 
 
 # Function to compare nodes

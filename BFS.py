@@ -1,14 +1,7 @@
 import cv2
-from map import map_canvas
-from graph import graph_generated
-from graph import checkinThis
-from map import mouse_start_node
-from map import mouse_goal_node
-from maps_utils import resolution
-from maps_utils import path_colour
-from maps_utils import pointEncompassed
-from maps_utils import visited_colour
-from graph import printNode
+from map import map_canvas, mouse_start_node, mouse_goal_node
+from graph import graph_generated, checkinThis, printNode
+from maps_utils import resolution, path_colour, pointEncompassed, visited_colour
 
 
 # Breadth First Search Class
