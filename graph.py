@@ -2,32 +2,73 @@ from map import map_canvas
 from maps_utils import Node, resolution, map_size, border_size, Obstacles
 
 
-# Function to compare nodes
 def compareNodes(node_1, node_2):
+    """
+    Compares two nodes to check if they are equal
+    
+    :param      node_1:  The first node to check
+    :type       node_1:  Node type
+    :param      node_2:  The second node to check
+    :type       node_2:  Node type
+    
+    :returns:   True or False
+    :rtype:     Boolean type
+    """
     if (node_1.x == node_2.x) and (node_1.y == node_2.y):
         return True
     else:
         return False
 
 
-# Checks if a node is there in a set
 def checkinThis(node_to_check, set_to_check_in):
+    """
+    Checks if a node is there in a list or a set
+    
+    :param      node_to_check:    The node to check
+    :type       node_to_check:    Node
+    :param      set_to_check_in:  The set to check in
+    :type       set_to_check_in:  List, Set
+    
+    :returns:   True or False
+    :rtype:     Boolean type
+    """
     for node in set_to_check_in:
         if compareNodes(node, node_to_check):
             return True
     return False
 
 
-# Checks if a node is there in a set
 def getSameNode(node_to_check, set_to_check_in):
+    """
+    Gets the same node from the set or the list.
+    
+    :param      node_to_check:    The node to check for
+    :type       node_to_check:    Node
+    :param      set_to_check_in:  The set/list to check in
+    :type       set_to_check_in:  Set or List
+    
+    :returns:   The equivalent node with the same x and y coordinate
+    :rtype:     The node, else 0
+    """
     for node in set_to_check_in:
         if compareNodes(node, node_to_check):
             return node
     return 0
 
 
-# Checks if a node is there in the graph
 def checkinGraph(node_to_check, graph_to_check_in):
+    """
+    Checks for teh nnode in the graph, by looking at all the 
+    keys / parent nodes
+    
+    :param      node_to_check:      The node to check for
+    :type       node_to_check:      Node type
+    :param      graph_to_check_in:  The graph to check in
+    :type       graph_to_check_in:  Graph type
+    
+    :returns:   True or False
+    :rtype:     Boolean type
+    """
     graph_keys = list(graph_to_check_in.getVertices())
     for node in graph_keys:
         if compareNodes(node, node_to_check):
@@ -35,29 +76,60 @@ def checkinGraph(node_to_check, graph_to_check_in):
     return False
 
 
-# Graph Class
 def printNode(node):
+    """
+    Prints the node, making it easy for debugging
+    
+    :param      node:  The node
+    :type       node:  Node type
+    
+    :returns: None
+    :rtype:   None
+    """
     print('Node is : ', node.x, ',', node.y)
 
 
 class Graph:
+    """
+    This is a class that describes the entire map as a graph
+    """
+
     def __init__(self, graph_dict):
+
         self.graph_dict = graph_dict
 
-    # Returns all the vertices
     def getVertices(self):
+        """
+        Gets the vertices of the graph
+        
+        :returns:   The vertices of the graph
+        :rtype:     list
+        """
         key_list = list(self.graph_dict.keys())
         return key_list
 
-    # Returns the neighbours of the node
     def getNeighbors(self, node):
+        """
+        Gets the neighbors of every vertex
+        
+        :param      node:  The parent node
+        :type       node:  Node
+        
+        :returns:   The neighbors / adjacent nodesto the parent
+        :rtype:     Graph
+        """
         key_list = list(self.graph_dict.keys())
         if checkinThis(node, key_list):
             similar_node = getSameNode(node, key_list)
             return self.graph_dict[similar_node]
 
-    # Returns all the Edges
     def getEdges(self):
+        """
+        Gets the edges of the graph
+        
+        :returns:   The edges of the graph
+        :rtype:     set
+        """
         val_set = set()
         val_node_list = list(self.graph_dict.values())
         for val_nodes in val_node_list:
@@ -67,6 +139,12 @@ class Graph:
 
 
 def generateGraph():
+    """
+    Generates the graph, from the critical map dimensions
+    
+    :returns:   graph_img, a graph
+    :rtype:     Graph
+    """
     print('Generating Graph')
     graph_dic = {}
     for x_range in range(border_size, map_size - border_size + 1):

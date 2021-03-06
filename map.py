@@ -8,13 +8,25 @@ from maps_utils import Node
 from maps_utils import startMessage
 from maps_utils import resolution
 
+# Reads out the message
 startMessage()
+# Creates an empty image
 map_canvas = np.zeros((map_size, map_size, 3), np.uint8)
+# Dummy start node - Origin - First points of the image
 mouse_start_node = Node(0, 0)
+# Dummy goal node - Last point of the image
 mouse_goal_node = Node(map_size, map_size)
 
 
 def LoadMap(canvas, border):
+    """
+    Loads the map
+    
+    :param      canvas:  The blank canvas
+    :type       canvas:  np matrix
+    :param      border:  The border
+    :type       border:  int
+    """
     # Fill image
     for row in range(map_size):
         for col in range(map_size):
@@ -44,6 +56,20 @@ def LoadMap(canvas, border):
 
 
 def clickMouse(event, x, y, flags, params):
+    """
+    Mouse click event to register right and left clicks
+    
+    :param      event:   The MOUSECLICK event
+    :type       event:   cv2 event
+    :param      x:       x cooridnate of the clikc
+    :type       x:       int
+    :param      y:       y cooridnate of the click
+    :type       y:       int
+    :param      flags:   The flags
+    :type       flags:   Boolean
+    :param      params:  The parameters
+    :type       params:  
+    """
     global map_canvas
     global mouse_start_node
     global mouse_goal_node

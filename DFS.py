@@ -5,8 +5,14 @@ from maps_utils import resolution, path_colour, pointEncompassed, visited_colour
 
 
 # Depth First Search Class
+
 class DepthFirstSearch:
+    """
+    This class describes a depth first search.
+    """
+
     def __init__(self, graph, start_node, goal_node):
+
         self.graph = graph
         self.start_node = start_node
         self.goal_node = goal_node
@@ -15,6 +21,12 @@ class DepthFirstSearch:
         self.count = 0
 
     def solveDepthFirstSearch(self, node):
+        """
+        Solves the graph using DFS Algorithm
+        
+        :param      node:  The current node
+        :type       node:  Node type
+        """
         print('Searching ... ')
 
         print('Now checking in the neighbour of ')

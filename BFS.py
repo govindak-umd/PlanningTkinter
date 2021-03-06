@@ -6,8 +6,11 @@ from maps_utils import resolution, path_colour, pointEncompassed, visited_colour
 
 # Breadth First Search Class
 class BreadthFirstSearch:
-
+    """
+    This class describes a depth first search.
+    """
     def __init__(self, graph, start_node, goal_node):
+
         self.graph = graph
         self.start_node = start_node
         self.goal_node = goal_node
@@ -17,6 +20,12 @@ class BreadthFirstSearch:
         self.count = 0
 
     def solveBreadthFirstSearch(self, node):
+        """
+        Solves the graph using BFS Algorithm
+
+        :param      node:  The current node
+        :type       node:  Node type
+        """
         self.visited.append(node)
         self.queue.append(node)
 
