@@ -1,9 +1,13 @@
 import cv2
-from map import map_canvas
+
 from graph import graph_generated
 from graph import checkinThis
+from graph import printNode
+
+from map import map_canvas
 from map import mouse_start_node
 from map import mouse_goal_node
+
 from maps_utils import resolution
 from maps_utils import path_colour
 from maps_utils import pointEncompassed
@@ -12,7 +16,6 @@ from maps_utils import visited_colour
 
 # DFS Class
 class DFS:
-
     def __init__(self, graph, start_node, goal_node):
         self.graph = graph
         self.start_node = start_node
@@ -21,11 +24,16 @@ class DFS:
         self.goal_reached = False
         self.count = 0
 
-    def solveDFS(self, start):
+    def solveDFS(self, node):
         print('Searching ... ')
 
+        print('Now checking in the neighbour of ')
+        print('-----')
+        printNode(node)
+        print('-----')
+
         # Checking if the goal is within the radius
-        if pointEncompassed(start, self.goal_node):
+        if pointEncompassed(node, self.goal_node):
             print('Length of Visited :', len(self.visited))
             print(' - - - Goal Reached - - - ')
             self.goal_reached = True
@@ -34,9 +42,10 @@ class DFS:
         if len(graph_keys) == len(self.visited):
             return None
         else:
-            self.visited.append(start)
-            cv2.circle(map_canvas, (start.x, start.y), resolution, visited_colour, -1, cv2.LINE_AA)
-            neighbours = self.graph.getNeighbors(start)
+            self.visited.append(node)
+            cv2.circle(map_canvas, (node.x, node.y), resolution, visited_colour, -1, cv2.LINE_AA)
+            neighbours = self.graph.getNeighbors(node)
+
             if neighbours is not None:
                 for neighbour in neighbours:
                     self.count += 1

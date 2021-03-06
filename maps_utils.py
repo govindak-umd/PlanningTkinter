@@ -36,6 +36,8 @@ def pointEncompassed(curr_node, goal_node):
 
 # Start message to be printed with running instructions
 def startMessage():
+    print('Remember to set Obstacles to True, if you want a better')
+    print('graph traversal, without hitting obstacles.')
     print('Left Click a point as a start Point')
     print('Right Click a point as a goal Point')
     print('Hit -Esc- after that')
