@@ -9,6 +9,7 @@ from maps_utils import path_colour
 from maps_utils import pointEncompassed
 
 
+# DFS Class
 class DFS:
 
     def __init__(self, graph, start_node, goal_node):
@@ -42,6 +43,7 @@ class DFS:
                             self.solveDFS(neighbour)
 
 
+# Main function to run the DFS
 if __name__ == "__main__":
     node_start = mouse_start_node
     node_goal = mouse_goal_node
