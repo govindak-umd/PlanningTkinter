@@ -11,6 +11,9 @@ resolution = 10
 # Color of the path traced out by the robot within
 # the maze - for visualization purposes
 path_colour = (200, 25, 25)
+# Color of the visited nodes by the robot within
+# the maze - for visualization purposes
+visited_colour = (50, 0, 50)
 # Mouse click color of the start - for visualization purposes
 start_colour = (0, 0, 255)
 # Mouse click color of the goal - for visualization purposes
