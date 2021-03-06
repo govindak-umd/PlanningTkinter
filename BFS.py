@@ -11,8 +11,8 @@ from maps_utils import visited_colour
 from graph import printNode
 
 
-# BFS Class
-class BFS:
+# Breadth First Search Class
+class BreadthFirstSearch:
 
     def __init__(self, graph, start_node, goal_node):
         self.graph = graph
@@ -23,7 +23,7 @@ class BFS:
         self.goal_reached = False
         self.count = 0
 
-    def solveBFS(self, node):
+    def solveBreadthFirstSearch(self, node):
         self.visited.append(node)
         self.queue.append(node)
 
@@ -58,5 +58,5 @@ class BFS:
 if __name__ == "__main__":
     node_start = mouse_start_node
     node_goal = mouse_goal_node
-    bfs = BFS(graph_generated, node_start, node_goal)
-    bfs.solveBFS(node_start)
+    bfs = BreadthFirstSearch(graph_generated, node_start, node_goal)
+    bfs.solveBreadthFirstSearch(node_start)

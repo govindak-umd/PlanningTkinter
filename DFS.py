@@ -14,8 +14,8 @@ from maps_utils import pointEncompassed
 from maps_utils import visited_colour
 
 
-# DFS Class
-class DFS:
+# Depth First Search Class
+class DepthFirstSearch:
     def __init__(self, graph, start_node, goal_node):
         self.graph = graph
         self.start_node = start_node
@@ -24,7 +24,7 @@ class DFS:
         self.goal_reached = False
         self.count = 0
 
-    def solveDFS(self, node):
+    def solveDepthFirstSearch(self, node):
         print('Searching ... ')
 
         print('Now checking in the neighbour of ')
@@ -54,12 +54,12 @@ class DFS:
                         break
                     if not checkinThis(neighbour, self.visited):
                         if not self.goal_reached:
-                            self.solveDFS(neighbour)
+                            self.solveDepthFirstSearch(neighbour)
 
 
 # Main function to run the DFS
 if __name__ == "__main__":
     node_start = mouse_start_node
     node_goal = mouse_goal_node
-    dfs = DFS(graph_generated, node_start, node_goal)
-    dfs.solveDFS(node_start)
+    dfs = DepthFirstSearch(graph_generated, node_start, node_goal)
+    dfs.solveDepthFirstSearch(node_start)
