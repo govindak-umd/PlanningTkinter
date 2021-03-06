@@ -51,13 +51,13 @@ def clickMouse(event, x, y, flags, params):
         print('Start at (', x, ',', y, ')')
         cv2.circle(map_canvas, (x, y), resolution, start_colour, -1, cv2.LINE_AA)
         cv2.imshow("map", map_canvas)
-        mouse_start_node = Node(y, x)
+        mouse_start_node = Node(x, y)
     if event == cv2.EVENT_RBUTTONDOWN:
         print('Goal at (', x, ',', y, ')')
         map_canvas[x, y] = (0, 255, 0)
         cv2.circle(map_canvas, (x, y), resolution, goal_colour, -1, cv2.LINE_AA)
         cv2.imshow("map", map_canvas)
-        mouse_goal_node = Node(y, x)
+        mouse_goal_node = Node(x, y)
 
 
 # Load the blank canvas

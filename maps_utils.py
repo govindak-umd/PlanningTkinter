@@ -15,9 +15,9 @@ class Node:
 
 
 # Check if a point is in a circle of
-# **resolution** radius
+# resolution unit radius
 def pointEncompassed(curr_node, goal_node):
-    if ((curr_node.x - goal_node.x) ** 2 - (curr_node.y - goal_node.y) ** 2) < resolution ** 2:
+    if ((curr_node.x - goal_node.x) ** 2 + (curr_node.y - goal_node.y) ** 2) < resolution ** 2:
         return True
 
 

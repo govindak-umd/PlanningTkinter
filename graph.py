@@ -1,4 +1,3 @@
-import cv2
 from maps_utils import map_size
 from maps_utils import border_size
 from maps_utils import Obstacles
