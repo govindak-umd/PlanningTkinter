@@ -320,9 +320,9 @@ graph_generated = generateGraph()
 # Generating a cost graph
 cost_graph_generated = generateCostGraph()
 
-# Gets the neighbours that shows the costs
-vertices = cost_graph_generated.getVertices()
-
-for vertex in vertices:
-    neighbour = cost_graph_generated.getNeighbors(vertex)
-    print(neighbour)
+# # Gets the neighbours that shows the costs
+# vertices = cost_graph_generated.getVertices()
+#
+# for vertex in vertices:
+#     neighbour = cost_graph_generated.getNeighbors(vertex)
+#     print(neighbour)
