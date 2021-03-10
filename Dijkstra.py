@@ -4,6 +4,16 @@ from graph import getSameNode, cost_graph_generated, graph_generated, checkinThi
 from maps_utils import resolution, path_colour, pointEncompassed, visited_colour
 import heapq
 
+class PriortityQueue:
+    def __init__ (self):
+        self.queue = []
+    def insert_pq(self,data):
+        self.queue.append(data)
+    def pop_pq(self,data):
+        try:
+            max = 0
+            for i in range(len(self.queue)):
+                if self
 
 def DijkstraSolve(graph, starting_vertex):
     graph_vertices = graph.getVertices()
