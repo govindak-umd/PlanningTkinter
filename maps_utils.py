@@ -18,7 +18,8 @@ visited_colour = (50, 0, 50)
 start_colour = (0, 0, 255)
 # Mouse click color of the goal - for visualization purposes
 goal_colour = (0, 255, 0)
-
+# Cost to neighbours
+cost = 1
 
 # Node class
 class Node:

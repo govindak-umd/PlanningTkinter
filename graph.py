@@ -1,5 +1,6 @@
 from map import map_canvas
 from maps_utils import Node, resolution, map_size, border_size, Obstacles
+from maps_utils import cost
 
 
 def compareNodes(node_1, node_2):
@@ -138,6 +139,91 @@ class Graph:
         return val_set
 
 
+def generateCostGraph():
+
+    print('Generating Cost Graph')
+    cost_graph = {}
+    for x_range in range(border_size, map_size - border_size + 1):
+        for y_range in range(border_size, map_size - border_size + 1):
+
+            # When obstacles are present
+
+            if Obstacles:
+                # Getting all cell values to check for black cells
+                b = map_canvas[x_range, y_range][0]
+                g = map_canvas[x_range, y_range][1]
+                r = map_canvas[x_range, y_range][2]
+
+                # Adding only white cells into the graph
+                if b != 0 and g != 0 and r != 0:
+                    # Parent Node
+
+                    node = Node(x_range, y_range)
+                    cost_graph[node] = []
+
+                    # Child Nodes
+
+                    # Checking for the child node to not be in a
+                    # boundary / obstacle
+                    b = map_canvas[x_range, y_range - resolution][0]
+                    g = map_canvas[x_range, y_range - resolution][1]
+                    r = map_canvas[x_range, y_range - resolution][2]
+                    if b != 0 and g != 0 and r != 0:
+                        node_top = Node(x_range, y_range - resolution)
+                        cost_graph[node][node_top] = cost
+
+                    # Checking for the child node to not be in a
+                    # boundary / obstacle
+                    b = map_canvas[x_range, y_range + resolution][0]
+                    g = map_canvas[x_range, y_range + resolution][1]
+                    r = map_canvas[x_range, y_range + resolution][2]
+                    if b != 0 and g != 0 and r != 0:
+                        node_below = Node(x_range, y_range + resolution)
+                        cost_graph[node][node_below] = cost
+
+                    # Checking for the child node to not be in a
+                    # boundary / obstacle
+                    b = map_canvas[x_range + resolution, y_range][0]
+                    g = map_canvas[x_range + resolution, y_range][1]
+                    r = map_canvas[x_range + resolution, y_range][2]
+                    if b != 0 and g != 0 and r != 0:
+                        node_right = Node(x_range + resolution, y_range)
+                        cost_graph[node][node_right] = cost
+
+                    # Checking for the child node to not be in a
+                    # boundary / obstacle
+                    b = map_canvas[x_range - resolution, y_range][0]
+                    g = map_canvas[x_range - resolution, y_range][1]
+                    r = map_canvas[x_range - resolution, y_range][2]
+                    if b != 0 and g != 0 and r != 0:
+                        node_left = Node(x_range - resolution, y_range)
+                        cost_graph[node][node_left] = cost
+
+            # When obstacles are NOT present
+            else:
+                # Parent Node
+
+                node = Node(x_range, y_range)
+                cost_graph[node] = {}
+
+                # Child Nodes
+                node_left = Node(x_range - resolution, y_range)
+                cost_graph[node][node_left] = cost
+
+                node_right = Node(x_range + resolution, y_range)
+                cost_graph[node][node_right] = cost
+
+                node_below = Node(x_range, y_range + resolution)
+                cost_graph[node][node_below] = cost
+
+                node_top = Node(x_range, y_range - resolution)
+                cost_graph[node][node_top] = cost
+    # Assigning the graph with all the connections
+    cost_graph_img = Graph(cost_graph)
+    print('Cost Graphs updated')
+    return cost_graph_img
+
+
 def generateGraph():
     """
     Generates the graph, from the critical map dimensions
@@ -230,3 +316,13 @@ def generateGraph():
 
 # Generating the graph
 graph_generated = generateGraph()
+
+# Generating a cost graph
+cost_graph_generated = generateCostGraph()
+
+# Gets the neighbours that shows the costs
+vertices = cost_graph_generated.getVertices()
+
+for vertex in vertices:
+    neighbour = cost_graph_generated.getNeighbors(vertex)
+    print(neighbour)
