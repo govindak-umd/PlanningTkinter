@@ -1,7 +1,7 @@
 import cv2
 from map import map_canvas, mouse_start_node, mouse_goal_node
 from graph import getSameNode, cost_graph_generated, compareNodes, graph_generated, checkinThis, printNode
-from maps_utils import resolution, pointEncompassed, visited_colour
+from maps_utils import resolution, pointEncompassed, visited_colour, path_colour
 
 
 class PriorityQueue:
@@ -34,12 +34,12 @@ def DijkstraSolve(graph, starting_vertex, goal_vertex):
     distances = {vertex: float('infinity') for vertex in graph_vertices}
     starting_vertex = getSameNode(starting_vertex, graph_vertices)
     distances[starting_vertex] = 0
-    goal_reached = False
+    goal_reached = 0
 
     priority_queue = PriorityQueue()
     priority_queue.insert_pq(0, starting_vertex)
 
-    while priority_queue.len_pq() > 0:
+    while priority_queue.len_pq() > 0 and goal_reached == 0:
 
         current_distance, current_vertex = priority_queue.pop_pq()
 
@@ -48,9 +48,9 @@ def DijkstraSolve(graph, starting_vertex, goal_vertex):
         if current_distance > distances[current_vertex]:
             continue
 
-        dict_C_items = cost_graph_generated.getNeighbors(current_vertex).items()
+        neighbours_and_weights = cost_graph_generated.getNeighbors(current_vertex).items()
 
-        for neighbour, weight in dict_C_items:
+        for neighbour, weight in neighbours_and_weights:
             cv2.circle(map_canvas, (neighbour.x, neighbour.y), resolution, visited_colour, -1, cv2.LINE_AA)
             distance = current_distance + weight
             neighbour = getSameNode(neighbour, graph_vertices)
@@ -60,7 +60,7 @@ def DijkstraSolve(graph, starting_vertex, goal_vertex):
                 cv2.imshow("Searching map", map_canvas)
                 if pointEncompassed(neighbour, goal_vertex):
                     print('GOAL FOUND')
-                    goal_reached = True
+                    goal_reached = 1
                 if cv2.waitKey(20) & 0xFF == ord('q'):
                     break
                 neighbour = getSameNode(neighbour, graph_vertices)
@@ -70,27 +70,11 @@ def DijkstraSolve(graph, starting_vertex, goal_vertex):
 
 # Main function to run Dijkstra
 if __name__ == "__main__":
+    final_img = map_canvas.copy()
     pq_custom = PriorityQueue()
     node_start = mouse_start_node
     node_goal = mouse_goal_node
 
     # Run the Dijkstra Solve Function
-    DijkstraSolve(cost_graph_generated, node_start, node_goal)
+    d = DijkstraSolve(cost_graph_generated, node_start, node_goal)
 
-    # ----TESTING-----
-
-    # print('Adding node to pq')
-    # pq_custom.insert_pq(7, node_start)
-    # print('Adding node to pq')
-    # pq_custom.insert_pq(90, node_start)
-    # pq_custom.insert_pq(99, node_start)
-    # pq_custom.insert_pq(911, node_start)
-    # pq_custom.insert_pq(911, node_goal)
-    # returned_max_cost, returned_max_cost_node = pq_custom.pop_pq()
-    # print('Returning Maximum cost node')
-    # printNode(returned_max_cost_node)
-    # print(returned_max_cost)
-    # len_pq_custom =  pq_custom.len_pq()
-    # print(len_pq_custom)
-
-    # ----TESTING COMPLETE-----
