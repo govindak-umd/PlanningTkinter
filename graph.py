@@ -116,7 +116,7 @@ class Graph:
         :param      node:  The parent node
         :type       node:  Node
         
-        :returns:   The neighbors / adjacent nodesto the parent
+        :returns:   The neighbors / adjacent nodes to the parent
         :rtype:     Graph
         """
         key_list = list(self.graph_dict.keys())
@@ -159,7 +159,7 @@ def generateCostGraph():
                     # Parent Node
 
                     node = Node(x_range, y_range)
-                    cost_graph[node] = []
+                    cost_graph[node] = {}
 
                     # Child Nodes
 
@@ -320,9 +320,19 @@ graph_generated = generateGraph()
 # Generating a cost graph
 cost_graph_generated = generateCostGraph()
 
-# # Gets the neighbours that shows the costs
+# ----TESTING-----
+# Generate Vertices of the graph
+# vertices = graph_generated.getVertices()
+# vertex_sample = vertices[0]
+# printNode(vertex_sample)
+# n = graph_generated.getNeighbors(vertex_sample)
+# for i in n:
+#     printNode(i)
+
+# Gets the neighbours that shows the costs
 # vertices = cost_graph_generated.getVertices()
-#
+
 # for vertex in vertices:
 #     neighbour = cost_graph_generated.getNeighbors(vertex)
 #     print(neighbour)
+# ----TESTING COMPLETE-----

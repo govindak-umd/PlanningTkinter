@@ -49,12 +49,12 @@ def DijkstraSolve(graph, starting_vertex):
         if current_distance > distances[current_vertex]:
             continue
         dict_C_items = cost_graph_generated.getNeighbors(current_vertex).items()
+
         for neighbour, weight in dict_C_items:
             distance = current_distance + weight
             neighbour = getSameNode(neighbour, graph_vertices)
             if distance < distances[neighbour]:
                 distances[neighbour] = distance
-
                 neighbour = getSameNode(neighbour, graph_vertices)
                 # heapq.heappush(priority_queue, (distance, neighbour))
                 priority_queue.insert_pq(distance, neighbour)

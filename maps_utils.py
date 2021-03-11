@@ -5,7 +5,7 @@ border_size = 10
 # Set Obstacles to be True, if the map has
 # to be more accurate and for the path to not touch
 # the borders
-Obstacles = False
+Obstacles = True
 # Radius of the robot moving within the maze
 resolution = 10
 # Color of the path traced out by the robot within
