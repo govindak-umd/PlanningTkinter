@@ -19,9 +19,9 @@ class PriorityQueue:
             for i in range(len(self.queue)):
                 if self.queue[i][0] > self.queue[max_idx][0]:
                     max_idx = i
-                max_cost_node = self.queue[max_idx][1]
+                max_cost, max_cost_node = self.queue[max_idx]
                 del self.queue[max_idx]
-                return max_cost_node
+                return max_cost, max_cost_node
         except IndexError:
             exit()
 
@@ -61,8 +61,11 @@ if __name__ == "__main__":
     print('Adding node to pq')
     pq_custom.insert_pq(1,node_start)
     print('Adding node to pq')
-    pq_custom.insert_pq(5,node_start)
-    returned_max_cost_node = pq_custom.pop_pq()
+    pq_custom.insert_pq(90,node_start)
+    pq_custom.insert_pq(99,node_start)
+    pq_custom.insert_pq(911,node_start)
+    returned_max_cost, returned_max_cost_node= pq_custom.pop_pq()
     print('Returning Maximum cost node')
     printNode(returned_max_cost_node)
+    print(returned_max_cost)
     # DijkstraSolve(cost_graph_generated, node_start)
