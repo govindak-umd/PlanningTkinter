@@ -4,16 +4,26 @@ from graph import getSameNode, cost_graph_generated, graph_generated, checkinThi
 from maps_utils import resolution, path_colour, pointEncompassed, visited_colour
 import heapq
 
+
 class PriortityQueue:
-    def __init__ (self):
+    def __init__(self):
         self.queue = []
-    def insert_pq(self,data):
+
+    def insert_pq(self, data):
         self.queue.append(data)
-    def pop_pq(self,data):
+
+    def pop_pq(self, data):
         try:
-            max = 0
+            max_idx = 0
             for i in range(len(self.queue)):
-                if self
+                if self.queue[i] > self.queue[max_idx]:
+                    max_idx = i
+                item_max = self.queue[max_idx]
+                del self.queue[max_idx]
+                return item_max
+        except IndexError:
+            exit()
+
 
 def DijkstraSolve(graph, starting_vertex):
     graph_vertices = graph.getVertices()
