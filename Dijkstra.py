@@ -90,7 +90,9 @@ def DijkstraSolve(graph, starting_vertex, goal_vertex):
 
         for neighbour, weight in neighbours_dictionary:
 
+            # draws the circle
             cv2.circle(map_canvas, (neighbour.x, neighbour.y), resolution, visited_colour, -1, cv2.LINE_AA)
+            # Adds the weight to the distance to reach the current node so far
             distance = current_distance + weight
 
             # Gets the equivalent node from the graph
