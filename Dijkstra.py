@@ -1,8 +1,7 @@
 import cv2
 from map import map_canvas, mouse_start_node, mouse_goal_node
 from graph import getSameNode, cost_graph_generated, compareNodes, graph_generated, checkinThis, printNode
-from maps_utils import resolution, path_colour, pointEncompassed, visited_colour
-import heapq
+from maps_utils import resolution, pointEncompassed, visited_colour
 
 
 class PriorityQueue:
@@ -35,13 +34,13 @@ def DijkstraSolve(graph, starting_vertex, goal_vertex):
     distances = {vertex: float('infinity') for vertex in graph_vertices}
     starting_vertex = getSameNode(starting_vertex, graph_vertices)
     distances[starting_vertex] = 0
+    goal_reached = False
 
-    # priority_queue = [(0, starting_vertex)]
     priority_queue = PriorityQueue()
     priority_queue.insert_pq(0, starting_vertex)
 
     while priority_queue.len_pq() > 0:
-        # current_distance, current_vertex = heapq.heappop(priority_queue)
+
         current_distance, current_vertex = priority_queue.pop_pq()
 
         current_vertex = getSameNode(current_vertex, graph_vertices)
@@ -61,7 +60,7 @@ def DijkstraSolve(graph, starting_vertex, goal_vertex):
                 cv2.imshow("Searching map", map_canvas)
                 if pointEncompassed(neighbour, goal_vertex):
                     print('GOAL FOUND')
-                    break
+                    goal_reached = True
                 if cv2.waitKey(20) & 0xFF == ord('q'):
                     break
                 neighbour = getSameNode(neighbour, graph_vertices)
@@ -74,6 +73,8 @@ if __name__ == "__main__":
     pq_custom = PriorityQueue()
     node_start = mouse_start_node
     node_goal = mouse_goal_node
+
+    # Run the Dijkstra Solve Function
     DijkstraSolve(cost_graph_generated, node_start, node_goal)
 
     # ----TESTING-----
