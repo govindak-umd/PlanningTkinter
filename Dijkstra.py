@@ -49,7 +49,6 @@ def DijkstraSolve(graph, starting_vertex):
         if current_distance > distances[current_vertex]:
             continue
         dict_C_items = cost_graph_generated.getNeighbors(current_vertex).items()
-
         for neighbour, weight in dict_C_items:
             distance = current_distance + weight
             neighbour = getSameNode(neighbour, graph_vertices)
