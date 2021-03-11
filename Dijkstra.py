@@ -5,22 +5,23 @@ from maps_utils import resolution, path_colour, pointEncompassed, visited_colour
 import heapq
 
 
-class PriortityQueue:
+class PriorityQueue:
     def __init__(self):
         self.queue = []
 
-    def insert_pq(self, data):
-        self.queue.append(data)
+    def insert_pq(self, cost, data_node):
+        node_cost_combo = (cost, data_node)
+        self.queue.append(node_cost_combo)
 
-    def pop_pq(self, data):
+    def pop_pq(self):
         try:
             max_idx = 0
             for i in range(len(self.queue)):
-                if self.queue[i] > self.queue[max_idx]:
+                if self.queue[i][0] > self.queue[max_idx][0]:
                     max_idx = i
-                item_max = self.queue[max_idx]
+                max_cost_node = self.queue[max_idx][1]
                 del self.queue[max_idx]
-                return item_max
+                return max_cost_node
         except IndexError:
             exit()
 
@@ -54,6 +55,14 @@ def DijkstraSolve(graph, starting_vertex):
 
 # Main function to run Dijkstra
 if __name__ == "__main__":
+    pq_custom = PriorityQueue()
     node_start = mouse_start_node
     node_goal = mouse_goal_node
-    DijkstraSolve(cost_graph_generated, node_start)
+    print('Adding node to pq')
+    pq_custom.insert_pq(1,node_start)
+    print('Adding node to pq')
+    pq_custom.insert_pq(5,node_start)
+    returned_max_cost_node = pq_custom.pop_pq()
+    print('Returning Maximum cost node')
+    printNode(returned_max_cost_node)
+    # DijkstraSolve(cost_graph_generated, node_start)
