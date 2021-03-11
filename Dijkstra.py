@@ -45,7 +45,7 @@ class PriorityQueue:
         """
         Returns the length of the priority queue
         """
-        print('Length of queue : >> ', len(self.queue))
+        # print('Length of queue : >> ', len(self.queue))
         return len(self.queue)
 
 
@@ -102,7 +102,7 @@ def DijkstraSolve(graph, starting_vertex, goal_vertex):
             # previously stored distance to that neighbour,
 
             if distance < distances[neighbour]:
-
+                # print('Distance so far : ', distance)
                 # Replace the distance value
 
                 distances[neighbour] = distance
