@@ -48,19 +48,23 @@ def DijkstraSolve(graph, starting_vertex, goal_vertex):
 
         if current_distance > distances[current_vertex]:
             continue
+
         dict_C_items = cost_graph_generated.getNeighbors(current_vertex).items()
 
         for neighbour, weight in dict_C_items:
-
-            if compareNodes(neighbour, goal_vertex):
-                print('GOAL FOUND')
-                break
+            cv2.circle(map_canvas, (neighbour.x, neighbour.y), resolution, visited_colour, -1, cv2.LINE_AA)
             distance = current_distance + weight
             neighbour = getSameNode(neighbour, graph_vertices)
             if distance < distances[neighbour]:
                 distances[neighbour] = distance
+                printNode(neighbour)
+                cv2.imshow("Searching map", map_canvas)
+                if pointEncompassed(neighbour, goal_vertex):
+                    print('GOAL FOUND')
+                    break
+                if cv2.waitKey(20) & 0xFF == ord('q'):
+                    break
                 neighbour = getSameNode(neighbour, graph_vertices)
-                # heapq.heappush(priority_queue, (distance, neighbour))
                 priority_queue.insert_pq(distance, neighbour)
     return distances
 
