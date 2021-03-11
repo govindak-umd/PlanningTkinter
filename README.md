@@ -6,4 +6,4 @@ Search Algorithms implemented here so far :
 
  - Breadth First Search
  - Depth First Search
- - Dijkstra's SearcH Algorithm
+ - Dijkstra's Search Algorithm
