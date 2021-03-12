@@ -38,6 +38,13 @@ def DijkstraSolve(graph, starting_vertex, goal_vertex):
         # Gets the equivalent node from the graph
         current_vertex = getSameNode(current_vertex, graph_vertices)
 
+        # Checks if the goal is within the radius specified
+        # in the utils file
+        if pointEncompassed(current_vertex, goal_vertex):
+            print(' - - - GOAL FOUND - - - ')
+            # Sets the value to True
+            goal_reached = 1
+
         if current_distance > distances[current_vertex]:
             continue
 
@@ -65,13 +72,6 @@ def DijkstraSolve(graph, starting_vertex, goal_vertex):
 
                 # Shows the traversal on map
                 cv2.imshow("Searching map", map_canvas)
-
-                # Checks if the goal is within the radius specified
-                # in the utils file
-                if pointEncompassed(neighbour, goal_vertex):
-                    print(' - - - GOAL FOUND - - - ')
-                    # Sets the value to True
-                    goal_reached = 1
 
                 if cv2.waitKey(20) & 0xFF == ord('q'):
                     break
