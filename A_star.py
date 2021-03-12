@@ -91,7 +91,7 @@ def A_Star_Solve(graph, starting_vertex, goal_vertex):
             # If the distance to the node is less than the
             # previously stored distance to that neighbour,
 
-            if g_cost < distances[neighbour]:
+            if f_cost < distances[neighbour]:
                 # print('Distance so far : ', distance)
                 # Replace the distance value
 
@@ -110,7 +110,7 @@ def A_Star_Solve(graph, starting_vertex, goal_vertex):
                 # per the rules of the Priority Queue Class.
                 # This new neighbour will be the one that can be traversed
                 # to with the lowest cost
-                priority_queue.insert_pq(f_cost, neighbour)
+                priority_queue.insert_pq(g_cost, neighbour)
 
 
 # Main function to run A Star
