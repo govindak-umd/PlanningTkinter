@@ -89,7 +89,6 @@ def DijkstraSolve(graph, starting_vertex, goal_vertex):
 # Main function to run Dijkstra
 if __name__ == "__main__":
     final_img = map_canvas.copy()
-    pq_custom = PriorityQueue()
     node_start = mouse_start_node
     node_goal = mouse_goal_node
 
