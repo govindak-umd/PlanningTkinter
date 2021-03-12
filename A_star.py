@@ -76,15 +76,15 @@ def A_Star_Solve(graph, starting_vertex, goal_vertex):
                 if compareNodes(neighbour, closed_child):
                     continue
 
+            # Gets the equivalent node from the graph
+            neighbour = getSameNode(neighbour, graph_vertices)
+
             # Adds the weight to the distance to reach the current node so far
             g_cost = current_distance + weight
             # h_cost = 0, for Dijkstra
             h_cost = ManhattanHeuristic(neighbour, goal_vertex)
             # f_cost is the sum of h_cost and g_cost
             f_cost = g_cost + h_cost
-
-            # Gets the equivalent node from the graph
-            neighbour = getSameNode(neighbour, graph_vertices)
 
             # If the distance to the node is less than the
             # previously stored distance to that neighbour,
@@ -93,7 +93,7 @@ def A_Star_Solve(graph, starting_vertex, goal_vertex):
                 # print('Distance so far : ', distance)
                 # Replace the distance value
 
-                distances[neighbour] = f_cost
+                distances[neighbour] = g_cost
 
                 # Shows the traversal on map
                 cv2.imshow("Searching map", map_canvas)
@@ -115,7 +115,7 @@ def A_Star_Solve(graph, starting_vertex, goal_vertex):
                 # per the rules of the Priority Queue Class.
                 # This new neighbour will be the one that can be traversed
                 # to with the lowest cost
-                priority_queue.insert_pq(f_cost, neighbour)
+                priority_queue.insert_pq(g_cost, neighbour)
 
 
 # Main function to run A Star
