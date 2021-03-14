@@ -1,7 +1,6 @@
-from map import map_canvas, obstacle_points
+from map import map_canvas
 from maps_utils import Node, resolution, map_size, border_size, Obstacles
 from maps_utils import cost
-from utils import dof_robot
 
 
 def compareNodes(node_1, node_2):
