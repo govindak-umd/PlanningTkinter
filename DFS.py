@@ -1,7 +1,8 @@
 import cv2
 from graph import graph_generated, checkinThis, printNode
 from map import map_canvas, mouse_start_node, mouse_goal_node
-from maps_utils import resolution, path_colour, pointEncompassed, visited_colour
+from maps_utils import resolution, pointEncompassed, visited_colour
+from utils import GenerateVideo
 
 
 # Depth First Search Class
@@ -27,12 +28,8 @@ class DepthFirstSearch:
         :param      node:  The current node
         :type       node:  Node type
         """
-        print('Searching ... ')
 
-        print('Now checking in the neighbour of ')
-        print('-----')
-        printNode(node)
-        print('-----')
+        video_count = 0
 
         # Checking if the goal is within the radius
         if pointEncompassed(node, self.goal_node):
@@ -46,6 +43,13 @@ class DepthFirstSearch:
         else:
             self.visited.append(node)
             cv2.circle(map_canvas, (node.x, node.y), resolution, visited_colour, -1, cv2.LINE_AA)
+            # To save the Video
+            len_number = len(str(video_count))
+
+            number_name = "0" * (6 - len_number)
+            cv2.imwrite('DFS_Video_Images/' + number_name + str(video_count) + '.jpg', map_canvas)
+            video_count += 1
+
             neighbours = self.graph.getNeighbors(node)
 
             if neighbours is not None:
@@ -65,3 +69,8 @@ if __name__ == "__main__":
     node_goal = mouse_goal_node
     dfs = DepthFirstSearch(graph_generated, node_start, node_goal)
     dfs.solveDepthFirstSearch(node_start)
+    image_folder = "DFS_Video_Images"
+
+    file_name = "DFS_Video"
+    GenerateVideo(image_folder, file_name, video_folder="Videos")
+

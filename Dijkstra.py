@@ -1,9 +1,10 @@
 import cv2
 from map import map_canvas, mouse_start_node, mouse_goal_node
 from graph import getSameNode, cost_graph_generated
-from maps_utils import Node, resolution, pointEncompassed, visited_colour
+from maps_utils import resolution, pointEncompassed, visited_colour
 from data_structures import PriorityQueue
 from utils import GenerateVideo
+
 
 def DijkstraSolve(graph, starting_vertex, goal_vertex):
     """
@@ -39,10 +40,10 @@ def DijkstraSolve(graph, starting_vertex, goal_vertex):
         # draws the circle
         cv2.circle(map_canvas, (current_vertex.x, current_vertex.y), resolution, visited_colour, -1, cv2.LINE_AA)
 
-        # takes the video
+        # To save the Video
         len_number = len(str(video_count))
-        number_name = "0"*(6-len_number)
-        cv2.imwrite('Dijkstra_Video_Images/' + number_name+str(video_count) + '.jpg', map_canvas)
+        number_name = "0" * (6 - len_number)
+        cv2.imwrite('Dijkstra_Video_Images/' + number_name + str(video_count) + '.jpg', map_canvas)
         video_count += 1
 
         # Gets the equivalent node from the graph
@@ -102,5 +103,5 @@ if __name__ == "__main__":
     # Run the Dijkstra Solve Function
     DijkstraSolve(cost_graph_generated, node_start, node_goal)
     image_folder = "Dijkstra_Video_Images"
-    file_name = "Dijkstra_Video_Images"
+    file_name = "Dijkstra_Video"
     GenerateVideo(image_folder, file_name, video_folder="Videos")

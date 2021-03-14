@@ -1,7 +1,8 @@
 import cv2
 from map import map_canvas, mouse_start_node, mouse_goal_node
 from graph import graph_generated, checkinThis, printNode
-from maps_utils import resolution, path_colour, pointEncompassed, visited_colour
+from maps_utils import resolution, pointEncompassed, visited_colour
+from utils import GenerateVideo
 
 
 # Breadth First Search Class
@@ -28,21 +29,17 @@ class BreadthFirstSearch:
         """
         self.visited.append(node)
         self.queue.append(node)
+        video_count = 0
 
         while self.queue and self.goal_reached is False:
 
             queue_lifo = self.queue.pop(0)
-            print('Now checking in the neighbour of ')
-            print('-----')
-            printNode(queue_lifo)
-            print('-----')
             neighbours = self.graph.getNeighbors(queue_lifo)
             if neighbours is not None:
                 for neighbour in neighbours:
                     if not checkinThis(neighbour, self.visited):
                         self.visited.append(neighbour)
                         self.queue.append(neighbour)
-                        printNode(neighbour)
 
                         # Checking if the goal is within the radius
                         if pointEncompassed(neighbour, self.goal_node):
@@ -51,6 +48,13 @@ class BreadthFirstSearch:
                             print(' - - - Goal Reached - - - ')
                             self.goal_reached = True
                         cv2.circle(map_canvas, (neighbour.x, neighbour.y), resolution, visited_colour, -1, cv2.LINE_AA)
+
+                        # To save the Video
+                        len_number = len(str(video_count))
+                        number_name = "0" * (6 - len_number)
+                        cv2.imwrite('BFS_Video_Images/' + number_name + str(video_count) + '.jpg', map_canvas)
+                        video_count += 1
+
                         cv2.imshow("Searching map", map_canvas)
                         if cv2.waitKey(20) & 0xFF == ord('q'):
                             break
@@ -62,3 +66,7 @@ if __name__ == "__main__":
     node_goal = mouse_goal_node
     bfs = BreadthFirstSearch(graph_generated, node_start, node_goal)
     bfs.solveBreadthFirstSearch(node_start)
+    image_folder = "BFS_Video_Images"
+    file_name = "BFS_Video"
+    GenerateVideo(image_folder, file_name, video_folder="Videos")
+

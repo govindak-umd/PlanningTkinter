@@ -1,7 +1,7 @@
 import cv2
 from map import map_canvas, mouse_start_node, mouse_goal_node
-from graph import getSameNode, cost_graph_generated, compareNodes, graph_generated, checkinThis, printNode
-from maps_utils import Node, resolution, pointEncompassed, visited_colour, path_colour
+from graph import getSameNode, cost_graph_generated, checkinThis, printNode
+from maps_utils import Node, resolution, pointEncompassed, visited_colour
 from data_structures import PriorityQueue
 from utils import GenerateVideo
 
@@ -94,7 +94,7 @@ def A_Star_Solve(graph, starting_vertex, goal_vertex):
         # draws the circle
         cv2.circle(map_canvas, (current_vertex.x, current_vertex.y), resolution, visited_colour, -1, cv2.LINE_AA)
 
-        # takes the video
+        # To save the Video
         len_number = len(str(video_count))
         number_name = "0"*(6-len_number)
         cv2.imwrite('A_Star_Video_Images/' + number_name+str(video_count) + '.jpg', map_canvas)
