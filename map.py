@@ -1,12 +1,6 @@
 import cv2
-from maps_utils import map_size
-from maps_utils import start_colour
-from maps_utils import goal_colour
-from maps_utils import border_size
 import numpy as np
-from maps_utils import Node
-from maps_utils import startMessage
-from maps_utils import resolution
+from maps_utils import map_size, start_colour, goal_colour, resolution, border_size, Node, startMessage
 
 # Reads out the message
 startMessage()
