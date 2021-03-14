@@ -10,6 +10,8 @@ map_canvas = np.zeros((map_size, map_size, 3), np.uint8)
 mouse_start_node = Node(0, 0)
 # Dummy goal node - Last point of the image
 mouse_goal_node = Node(map_size, map_size)
+# list of obstacle points
+obstacle_points = []
 
 
 def LoadMap(canvas, border):
@@ -21,31 +23,42 @@ def LoadMap(canvas, border):
     :param      border:  The border
     :type       border:  int
     """
+    global obstacle_points
+
     # Fill image
     for row in range(map_size):
         for col in range(map_size):
-            canvas[row, col] = (255, 255, 255)
+            canvas[col, row] = (255, 255, 255)
 
-    # Top border
+    # Left border
     for row in range(border):
         for col in range(map_size):
-            canvas[row, col] = (0, 0, 0)
+            obstacle_points.append(Node(col, row))
+            canvas[col, row] = (0, 0, 0)
 
-    # Left Border
+    # Top Border
     for row in range(map_size):
         for col in range(border):
-            canvas[row, col] = (0, 0, 0)
+            obstacle_points.append(Node(col, row))
+            canvas[col, row] = (0, 0, 0)
 
-    # Bottom Border
+    #  Right Border
     for row in range(map_size - border, map_size):
         for col in range(map_size):
-            canvas[row, col] = (0, 0, 0)
+            obstacle_points.append(Node(col, row))
+            canvas[col, row] = (0, 0, 0)
 
-    # Right Border
+    # Bottom Border
     for row in range(map_size):
         for col in range(map_size - border, map_size):
-            canvas[row, col] = (0, 0, 0)
+            obstacle_points.append(Node(col, row))
+            canvas[col, row] = (0, 0, 0)
 
+    # Obstacle 1
+    for row in range(70, 90):
+        for col in range(150, 200):
+            obstacle_points.append(Node(col, row))
+            canvas[col, row] = (0, 0, 0)
     return canvas
 
 

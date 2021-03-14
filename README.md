@@ -1,8 +1,8 @@
-# PlanningTkinter
+# Planning Algorithms Visualized through OpenCV and UI with tkinter
 
 View planning on Trello board [here](https://trello.com/b/A9lTAano/planningtkinter).
 
-Search Algorithms implemented here so far :
+Search Algorithms implemented so far :
 
  - Breadth First Search Algorithm
  - Depth First Search Algorithm

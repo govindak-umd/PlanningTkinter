@@ -1,4 +1,4 @@
-from map import map_canvas
+from map import map_canvas, obstacle_points
 from maps_utils import Node, resolution, map_size, border_size, Obstacles
 from maps_utils import cost
 
@@ -90,6 +90,22 @@ def printNode(node):
     print('Node is : ', node.x, ',', node.y)
 
 
+def checkNodeinObstacle(node, img):
+    """
+    To check the color of the image at a particular Node
+    :param node: node to check
+    :type node: Node type
+    :param img: the image to check in
+    :type img: np.array
+    :return: Boolean of True or False
+    :rtype: Boolean
+    """
+
+    if img[node.y, node.x][0] == 0 and img[node.y, node.x][1] == 0 and img[node.y, node.x][2] == 0:
+        return True
+    return False
+
+
 class Graph:
     """
     This is a class that describes the entire map as a graph
@@ -140,83 +156,68 @@ class Graph:
 
 
 def generateCostGraph():
+    """
+    Function generates cost graph to be used to solve with
+    Dijkstra and A* path planning algorithms
+    :return: Cost Graph
+    :rtype: Graph
+    """
     print('Generating Cost Graph')
     cost_graph = {}
-    for x_range in range(border_size, map_size - border_size + 1):
-        for y_range in range(border_size, map_size - border_size + 1):
+
+    for row_range in range(border_size - 1, map_size - border_size + 1):
+        for col_range in range(border_size, map_size - border_size + 1):
 
             # When obstacles are present
 
             if Obstacles:
-                # Getting all cell values to check for black cells
-                b = map_canvas[x_range, y_range][0]
-                g = map_canvas[x_range, y_range][1]
-                r = map_canvas[x_range, y_range][2]
+
+                node = Node(col_range, row_range)
 
                 # Adding only white cells into the graph
-                if b != 0 and g != 0 and r != 0:
+                if not checkNodeinObstacle(node, map_canvas):
                     # Parent Node
 
-                    node = Node(x_range, y_range)
                     cost_graph[node] = {}
 
                     # Child Nodes
 
-                    # Checking for the child node to not be in a
-                    # boundary / obstacle
-                    b = map_canvas[x_range, y_range - resolution][0]
-                    g = map_canvas[x_range, y_range - resolution][1]
-                    r = map_canvas[x_range, y_range - resolution][2]
-                    if b != 0 and g != 0 and r != 0:
-                        node_top = Node(x_range, y_range - resolution)
+                    node_top = Node(col_range - resolution, row_range)
+                    if not checkNodeinObstacle(node_top, map_canvas):
                         cost_graph[node][node_top] = cost
 
-                    # Checking for the child node to not be in a
-                    # boundary / obstacle
-                    b = map_canvas[x_range, y_range + resolution][0]
-                    g = map_canvas[x_range, y_range + resolution][1]
-                    r = map_canvas[x_range, y_range + resolution][2]
-                    if b != 0 and g != 0 and r != 0:
-                        node_below = Node(x_range, y_range + resolution)
+                    node_below = Node(col_range + resolution, row_range)
+                    if not checkNodeinObstacle(node_below, map_canvas):
                         cost_graph[node][node_below] = cost
 
-                    # Checking for the child node to not be in a
-                    # boundary / obstacle
-                    b = map_canvas[x_range + resolution, y_range][0]
-                    g = map_canvas[x_range + resolution, y_range][1]
-                    r = map_canvas[x_range + resolution, y_range][2]
-                    if b != 0 and g != 0 and r != 0:
-                        node_right = Node(x_range + resolution, y_range)
+                    node_right = Node(col_range, row_range + resolution)
+                    if not checkNodeinObstacle(node_right, map_canvas):
                         cost_graph[node][node_right] = cost
 
-                    # Checking for the child node to not be in a
-                    # boundary / obstacle
-                    b = map_canvas[x_range - resolution, y_range][0]
-                    g = map_canvas[x_range - resolution, y_range][1]
-                    r = map_canvas[x_range - resolution, y_range][2]
-                    if b != 0 and g != 0 and r != 0:
-                        node_left = Node(x_range - resolution, y_range)
+                    node_left = Node(col_range, row_range - resolution)
+                    if not checkNodeinObstacle(node_left, map_canvas):
                         cost_graph[node][node_left] = cost
 
             # When obstacles are NOT present
             else:
                 # Parent Node
 
-                node = Node(x_range, y_range)
+                node = Node(row_range, col_range)
                 cost_graph[node] = {}
 
                 # Child Nodes
-                node_left = Node(x_range - resolution, y_range)
+                node_left = Node(row_range - resolution, col_range)
                 cost_graph[node][node_left] = cost
 
-                node_right = Node(x_range + resolution, y_range)
+                node_right = Node(row_range + resolution, col_range)
                 cost_graph[node][node_right] = cost
 
-                node_below = Node(x_range, y_range + resolution)
+                node_below = Node(row_range, col_range + resolution)
                 cost_graph[node][node_below] = cost
 
-                node_top = Node(x_range, y_range - resolution)
+                node_top = Node(row_range, col_range - resolution)
                 cost_graph[node][node_top] = cost
+
     # Assigning the graph with all the connections
     cost_graph_img = Graph(cost_graph)
     print('Cost Graphs updated')
@@ -226,86 +227,72 @@ def generateCostGraph():
 def generateGraph():
     """
     Generates the graph, from the critical map dimensions
-    
+
     :returns:   graph_img, a graph
     :rtype:     Graph
     """
     print('Generating Graph')
     graph_dic = {}
-    for x_range in range(border_size, map_size - border_size + 1):
-        for y_range in range(border_size, map_size - border_size + 1):
+
+    for row_range in range(border_size, map_size - border_size + 1):
+        for col_range in range(border_size, map_size - border_size + 1):
 
             # When obstacles are present
 
             if Obstacles:
-                # Getting all cell values to check for black cells
-                b = map_canvas[x_range, y_range][0]
-                g = map_canvas[x_range, y_range][1]
-                r = map_canvas[x_range, y_range][2]
 
-                # Adding only white cells into the graph
-                if b != 0 and g != 0 and r != 0:
+                node = Node(col_range, row_range)
+
+                if not checkNodeinObstacle(node, map_canvas):
                     # Parent Node
 
-                    node = Node(x_range, y_range)
                     graph_dic[node] = []
 
                     # Child Nodes
 
                     # Checking for the child node to not be in a
                     # boundary / obstacle
-                    b = map_canvas[x_range, y_range - resolution][0]
-                    g = map_canvas[x_range, y_range - resolution][1]
-                    r = map_canvas[x_range, y_range - resolution][2]
-                    if b != 0 and g != 0 and r != 0:
-                        node_top = Node(x_range, y_range - resolution)
+
+                    node_top = Node(col_range - resolution, row_range)
+                    if not checkNodeinObstacle(node_top, map_canvas):
                         graph_dic[node].append(node_top)
 
                     # Checking for the child node to not be in a
                     # boundary / obstacle
-                    b = map_canvas[x_range, y_range + resolution][0]
-                    g = map_canvas[x_range, y_range + resolution][1]
-                    r = map_canvas[x_range, y_range + resolution][2]
-                    if b != 0 and g != 0 and r != 0:
-                        node_below = Node(x_range, y_range + resolution)
+                    node_below = Node(col_range + resolution, row_range)
+                    if not checkNodeinObstacle(node_below, map_canvas):
                         graph_dic[node].append(node_below)
 
                     # Checking for the child node to not be in a
                     # boundary / obstacle
-                    b = map_canvas[x_range + resolution, y_range][0]
-                    g = map_canvas[x_range + resolution, y_range][1]
-                    r = map_canvas[x_range + resolution, y_range][2]
-                    if b != 0 and g != 0 and r != 0:
-                        node_right = Node(x_range + resolution, y_range)
+                    node_right = Node(col_range, row_range + resolution)
+                    if not checkNodeinObstacle(node_right, map_canvas):
                         graph_dic[node].append(node_right)
 
                     # Checking for the child node to not be in a
                     # boundary / obstacle
-                    b = map_canvas[x_range - resolution, y_range][0]
-                    g = map_canvas[x_range - resolution, y_range][1]
-                    r = map_canvas[x_range - resolution, y_range][2]
-                    if b != 0 and g != 0 and r != 0:
-                        node_left = Node(x_range - resolution, y_range)
+                    node_left = Node(col_range, row_range - resolution)
+                    if not checkNodeinObstacle(node_left, map_canvas):
                         graph_dic[node].append(node_left)
 
             # When obstacles are NOT present
             else:
                 # Parent Node
 
-                node = Node(x_range, y_range)
+                node = Node(row_range, col_range)
                 graph_dic[node] = []
 
                 # Child Nodes
-                node_left = Node(x_range - resolution, y_range)
+                node_left = Node(row_range - resolution, col_range)
                 graph_dic[node].append(node_left)
 
-                node_right = Node(x_range + resolution, y_range)
+                node_right = Node(row_range + resolution, col_range)
                 graph_dic[node].append(node_right)
 
-                node_below = Node(x_range, y_range + resolution)
+                node_below = Node(row_range, col_range + resolution)
                 graph_dic[node].append(node_below)
 
-                node_top = Node(x_range, y_range - resolution)
+                node_top = Node(row_range, col_range - resolution)
                 graph_dic[node].append(node_top)
     # Assigning the graph with all the connections
     graph_img = Graph(graph_dic)
@@ -314,24 +301,9 @@ def generateGraph():
 
 
 # Generating the graph
+# For DFS, BFS
 graph_generated = generateGraph()
 
 # Generating a cost graph
+# For Dijkstra, A*
 cost_graph_generated = generateCostGraph()
-
-# ----TESTING-----
-# Generate Vertices of the graph
-# vertices = graph_generated.getVertices()
-# vertex_sample = vertices[0]
-# printNode(vertex_sample)
-# n = graph_generated.getNeighbors(vertex_sample)
-# for i in n:
-#     printNode(i)
-
-# Gets the neighbours that shows the costs
-# vertices = cost_graph_generated.getVertices()
-
-# for vertex in vertices:
-#     neighbour = cost_graph_generated.getNeighbors(vertex)
-#     print(neighbour)
-# ----TESTING COMPLETE-----

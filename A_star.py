@@ -128,7 +128,7 @@ def A_Star_Solve(graph, starting_vertex, goal_vertex):
             neighbour_g_cost = current_distance + weight
             # h_cost = 0, for Dijkstra,
             # Can have an Euclidean, or a Manhattan Heuristic
-            neighbour_h_cost = EuclideanHeuristic(neighbour, goal_vertex)
+            neighbour_h_cost = ManhattanHeuristic(neighbour, goal_vertex)
             # f_cost is the sum of h_cost and g_cost
             neighbour_f_cost = neighbour_g_cost + neighbour_h_cost
 
@@ -174,6 +174,8 @@ def doAStarPathPlanning():
 if __name__ == "__main__":
     clicked_start = mouse_start_node
     clicked_goal = mouse_goal_node
+    # clicked_start = Node(200,50)
+    # clicked_goal = Node(50,200)
     time_s = time.time()
     # Run the A Star Solve Function
     A_Star_Solve(cost_graph_generated, clicked_start, clicked_goal)
