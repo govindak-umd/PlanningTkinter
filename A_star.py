@@ -7,6 +7,15 @@ from utils import GenerateVideo
 
 
 def EuclideanHeuristic(start_node, goal_node):
+    """
+    Function to calculate the Euclidean Distance
+    :param start_node: start node
+    :type start_node: Node
+    :param goal_node: Goal Node
+    :type goal_node: Node
+    :return: Euclidean distance units
+    :rtype: Integer
+    """
     x_1 = start_node.x
     y_1 = start_node.y
 
@@ -19,6 +28,15 @@ def EuclideanHeuristic(start_node, goal_node):
 
 
 def ManhattanHeuristic(start_node, goal_node):
+    """
+    Function to calculate the Manhattan Distance
+    :param start_node: start node
+    :type start_node: Node
+    :param goal_node: Goal Node
+    :type goal_node: Node
+    :return: Manhattan distance units
+    :rtype: Integer
+    """
     x_1 = start_node.x
     y_1 = start_node.y
 
@@ -31,6 +49,15 @@ def ManhattanHeuristic(start_node, goal_node):
 
 
 def A_Star_Solve(graph, starting_vertex, goal_vertex):
+    """
+    Solve A star Path Planning algorithm
+    :param graph: Graph of the map
+    :type graph: Graph Type
+    :param starting_vertex: Starting Node
+    :type starting_vertex: Node
+    :param goal_vertex: Goal Node
+    :type goal_vertex: Node
+    """
     # f = g + h
     # g is the distance between the current node and the start node
     # h is the distance between the current node adn the goal node (heuristic)
