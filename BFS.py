@@ -3,9 +3,11 @@ from map import map_canvas, mouse_start_node, mouse_goal_node
 from graph import graph_generated, checkinThis, printNode
 from maps_utils import resolution, pointEncompassed, visited_colour
 from utils import GenerateVideo
+import time
 
 
 # Breadth First Search Class
+
 class BreadthFirstSearch:
     """
     This class describes a depth first search.
@@ -79,8 +81,10 @@ def doBFS():
 if __name__ == "__main__":
     clicked_start = mouse_start_node
     clicked_goal = mouse_goal_node
+    time_s = time.time()
     bfs = BreadthFirstSearch(graph_generated, clicked_start, clicked_goal)
     bfs.solveBreadthFirstSearch(clicked_start)
+    print('Total Time for execution : ', time.time() - time_s, ' seconds')
     image_folder = "BFS_Video_Images"
     file_name = "BFS_Video"
     GenerateVideo(image_folder, file_name, video_folder="Videos")

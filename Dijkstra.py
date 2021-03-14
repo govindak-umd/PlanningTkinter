@@ -4,7 +4,7 @@ from graph import getSameNode, cost_graph_generated
 from maps_utils import resolution, pointEncompassed, visited_colour
 from data_structures import PriorityQueue
 from utils import GenerateVideo
-
+import time
 
 def DijkstraSolve(graph, starting_vertex, goal_vertex):
     """
@@ -114,8 +114,10 @@ if __name__ == "__main__":
     final_img = map_canvas.copy()
     clicked_start = mouse_start_node
     clicked_goal = mouse_goal_node
+    time_s = time.time()
     # Run the Dijkstra Solve Function
     DijkstraSolve(cost_graph_generated, clicked_start, clicked_goal)
+    print('Total Time for execution : ',  time.time() - time_s, ' seconds')
     image_folder = "Dijkstra_Video_Images"
     file_name = "Dijkstra_Video"
     GenerateVideo(image_folder, file_name, video_folder="Videos")

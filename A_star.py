@@ -4,7 +4,7 @@ from graph import getSameNode, cost_graph_generated, checkinThis, printNode
 from maps_utils import Node, resolution, pointEncompassed, visited_colour
 from data_structures import PriorityQueue
 from utils import GenerateVideo
-from tkinter import *
+import time
 
 
 def EuclideanHeuristic(start_node, goal_node):
@@ -172,8 +172,10 @@ def doAStarPathPlanning():
 if __name__ == "__main__":
     clicked_start = mouse_start_node
     clicked_goal = mouse_goal_node
+    time_s = time.time()
     # Run the A Star Solve Function
     A_Star_Solve(cost_graph_generated, clicked_start, clicked_goal)
+    print('Total Time for execution : ', time.time() - time_s, ' seconds')
     image_folder = "A_Star_Video_Images"
     file = "A_star_Video"
     GenerateVideo(image_folder, file, video_folder="Videos")

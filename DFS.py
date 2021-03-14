@@ -3,6 +3,7 @@ from graph import graph_generated, checkinThis, printNode
 from map import map_canvas, mouse_start_node, mouse_goal_node
 from maps_utils import resolution, pointEncompassed, visited_colour
 from utils import GenerateVideo
+import time
 
 
 # Depth First Search Class
@@ -81,8 +82,10 @@ def doDFS():
 if __name__ == "__main__":
     clicked_start = mouse_start_node
     clicked_goal = mouse_goal_node
+    time_s = time.time()
     dfs = DepthFirstSearch(graph_generated, clicked_start, clicked_goal)
     dfs.solveDepthFirstSearch(clicked_start)
+    print('Total Time for execution : ', time.time() - time_s, ' seconds')
     image_folder = "DFS_Video_Images"
     file_name = "DFS_Video"
     GenerateVideo(image_folder, file_name, video_folder="Videos")
