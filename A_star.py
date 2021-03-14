@@ -110,6 +110,7 @@ def A_Star_Solve(graph, starting_vertex, goal_vertex):
             print(' - - - GOAL FOUND - - - ')
             # Sets the value to True
             goal_reached = 1
+            print('Video Generating ....')
 
         # A dictionary containing the neighbours and the weight/cost to reach them
         neighbours_dictionary = cost_graph_generated.getNeighbors(current_vertex).items()

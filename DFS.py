@@ -37,6 +37,8 @@ class DepthFirstSearch:
             print('Length of Visited :', len(self.visited))
             print(' - - - Goal Reached - - - ')
             self.goal_reached = True
+            print('Video Generating ....')
+
 
         graph_keys = list(self.graph.getVertices())
         if len(graph_keys) == len(self.visited):

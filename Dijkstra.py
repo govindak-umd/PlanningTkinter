@@ -56,6 +56,7 @@ def DijkstraSolve(graph, starting_vertex, goal_vertex):
             print(' - - - GOAL FOUND - - - ')
             # Sets the value to True
             goal_reached = 1
+            print('Video Generating ....')
 
         if current_distance > distances[current_vertex]:
             continue

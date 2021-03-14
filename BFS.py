@@ -50,6 +50,8 @@ class BreadthFirstSearch:
                             print('Length of Queue :', len(self.queue))
                             print(' - - - Goal Reached - - - ')
                             self.goal_reached = True
+                            print('Video Generating ....')
+
                         cv2.circle(map_canvas, (neighbour.x, neighbour.y), resolution, visited_colour, -1, cv2.LINE_AA)
 
                         # To save the Video
