@@ -1,6 +1,13 @@
 import cv2
 import os
 
+# Degrees of freedom for the robot
+# A 2 d.o.f robot can move in +x -x +y -y
+# This can be developed further by getting a formula
+# for finding a relation between the d.o.f and the directions,
+# as well as between the d.o.f and the cost it takes for a path
+dof_robot = 2
+
 
 def GenerateVideo(image_folder, file_name, video_folder="Videos"):
     """
