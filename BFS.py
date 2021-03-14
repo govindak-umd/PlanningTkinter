@@ -10,6 +10,7 @@ class BreadthFirstSearch:
     """
     This class describes a depth first search.
     """
+
     def __init__(self, graph, start_node, goal_node):
 
         self.graph = graph
@@ -60,13 +61,26 @@ class BreadthFirstSearch:
                             break
 
 
-# Main function to run the BFS
-if __name__ == "__main__":
+def doBFS():
+    """
+    BFS Function to be executed when
+    Tkinter Button is clicked
+    """
     node_start = mouse_start_node
     node_goal = mouse_goal_node
-    bfs = BreadthFirstSearch(graph_generated, node_start, node_goal)
-    bfs.solveBreadthFirstSearch(node_start)
+    bfs_tk = BreadthFirstSearch(graph_generated, node_start, node_goal)
+    bfs_tk.solveBreadthFirstSearch(node_start)
+    image_folder_name = "BFS_Video_Images"
+    file = "BFS_Video"
+    GenerateVideo(image_folder_name, file, video_folder="Videos")
+
+
+# Main function to run the BFS
+if __name__ == "__main__":
+    clicked_start = mouse_start_node
+    clicked_goal = mouse_goal_node
+    bfs = BreadthFirstSearch(graph_generated, clicked_start, clicked_goal)
+    bfs.solveBreadthFirstSearch(clicked_start)
     image_folder = "BFS_Video_Images"
     file_name = "BFS_Video"
     GenerateVideo(image_folder, file_name, video_folder="Videos")
-

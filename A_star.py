@@ -4,6 +4,7 @@ from graph import getSameNode, cost_graph_generated, checkinThis, printNode
 from maps_utils import Node, resolution, pointEncompassed, visited_colour
 from data_structures import PriorityQueue
 from utils import GenerateVideo
+from tkinter import *
 
 
 def EuclideanHeuristic(start_node, goal_node):
@@ -153,13 +154,26 @@ def A_Star_Solve(graph, starting_vertex, goal_vertex):
                 priority_queue.insert_pq(neighbour_f_cost, neighbour)
 
 
-# Main function to run A Star
-if __name__ == "__main__":
-    final_img = map_canvas.copy()
+def doAStarPathPlanning():
+    """
+    A * Function to be executed when
+    Tkinter Button is clicked
+    """
     node_start = mouse_start_node
     node_goal = mouse_goal_node
     # Run the A Star Solve Function
     A_Star_Solve(cost_graph_generated, node_start, node_goal)
-    image_folder = "A_Star_Video_Images"
+    image_folder_name = "A_Star_Video_Images"
     file_name = "A_star_Video"
-    GenerateVideo(image_folder, file_name, video_folder="Videos")
+    GenerateVideo(image_folder_name, file_name, video_folder="Videos")
+
+
+# Main function to run A Star
+if __name__ == "__main__":
+    clicked_start = mouse_start_node
+    clicked_goal = mouse_goal_node
+    # Run the A Star Solve Function
+    A_Star_Solve(cost_graph_generated, clicked_start, clicked_goal)
+    image_folder = "A_Star_Video_Images"
+    file = "A_star_Video"
+    GenerateVideo(image_folder, file, video_folder="Videos")

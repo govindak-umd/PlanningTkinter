@@ -63,14 +63,26 @@ class DepthFirstSearch:
                             self.solveDepthFirstSearch(neighbour)
 
 
-# Main function to run the DFS
-if __name__ == "__main__":
+def doDFS():
+    """
+    BFS Function to be executed when
+    Tkinter Button is clicked
+    """
     node_start = mouse_start_node
     node_goal = mouse_goal_node
-    dfs = DepthFirstSearch(graph_generated, node_start, node_goal)
-    dfs.solveDepthFirstSearch(node_start)
-    image_folder = "DFS_Video_Images"
+    dfs_tk = DepthFirstSearch(graph_generated, node_start, node_goal)
+    dfs_tk.solveDepthFirstSearch(node_start)
+    image_folder_name = "DFS_Video_Images"
+    file = "DFS_Video"
+    GenerateVideo(image_folder_name, file, video_folder="Videos")
 
+
+# Main function to run the DFS
+if __name__ == "__main__":
+    clicked_start = mouse_start_node
+    clicked_goal = mouse_goal_node
+    dfs = DepthFirstSearch(graph_generated, clicked_start, clicked_goal)
+    dfs.solveDepthFirstSearch(clicked_start)
+    image_folder = "DFS_Video_Images"
     file_name = "DFS_Video"
     GenerateVideo(image_folder, file_name, video_folder="Videos")
-

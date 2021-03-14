@@ -95,13 +95,27 @@ def DijkstraSolve(graph, starting_vertex, goal_vertex):
                 priority_queue.insert_pq(distance, neighbour)
 
 
-# Main function to run Dijkstra
-if __name__ == "__main__":
-    final_img = map_canvas.copy()
+def doDijkstra():
+    """
+    Dijkstra Function to be executed when
+    Tkinter Button is clicked
+    """
     node_start = mouse_start_node
     node_goal = mouse_goal_node
     # Run the Dijkstra Solve Function
     DijkstraSolve(cost_graph_generated, node_start, node_goal)
+    image_folder_name = "Dijkstra_Video_Images"
+    file = "Dijkstra_Video"
+    GenerateVideo(image_folder_name, file, video_folder="Videos")
+
+
+# Main function to run Dijkstra
+if __name__ == "__main__":
+    final_img = map_canvas.copy()
+    clicked_start = mouse_start_node
+    clicked_goal = mouse_goal_node
+    # Run the Dijkstra Solve Function
+    DijkstraSolve(cost_graph_generated, clicked_start, clicked_goal)
     image_folder = "Dijkstra_Video_Images"
     file_name = "Dijkstra_Video"
     GenerateVideo(image_folder, file_name, video_folder="Videos")

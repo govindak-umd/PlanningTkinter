@@ -140,7 +140,6 @@ class Graph:
 
 
 def generateCostGraph():
-
     print('Generating Cost Graph')
     cost_graph = {}
     for x_range in range(border_size, map_size - border_size + 1):
