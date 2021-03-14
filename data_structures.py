@@ -46,6 +46,13 @@ class PriorityQueue:
         return len(self.queue)
 
     def checkinPQ(self,node_to_check):
+        """
+        Checks for a node in the Priority Queue
+        :param node_to_check: The node to check
+        :type node_to_check: Node type
+        :return: True or False
+        :rtype: boolean
+        """
         for all_tuples in self.queue:
             if compareNodes(all_tuples[1],node_to_check):
                 return True
