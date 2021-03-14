@@ -38,6 +38,7 @@ def A_Star_Solve(graph, starting_vertex, goal_vertex):
 
     # Returns the vertices of the graph
     graph_vertices = graph.getVertices()
+
     distances = {vertex: float('infinity') for vertex in graph_vertices}
     distances[starting_vertex] = 0
 
@@ -69,9 +70,6 @@ def A_Star_Solve(graph, starting_vertex, goal_vertex):
             # Sets the value to True
             goal_reached = 1
 
-        if current_distance > distances[current_vertex]:
-            continue
-
         # A dictionary containing the neighbours and the weight/cost to reach them
         neighbours_dictionary = cost_graph_generated.getNeighbors(current_vertex).items()
 
@@ -94,7 +92,6 @@ def A_Star_Solve(graph, starting_vertex, goal_vertex):
 
             # If the distance to the node is less than the
             # previously stored distance to that neighbour,
-
             if f_cost < distances[neighbour]:
 
                 # draws the circle
