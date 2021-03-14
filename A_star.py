@@ -89,15 +89,13 @@ def A_Star_Solve(graph, starting_vertex, goal_vertex):
         # Gets the node as per the priority queue
         current_distance, current_vertex = priority_queue.pop_pq()
 
-        print('Popped Vertex ... ')
-        printNode(current_vertex)
         # draws the circle
         cv2.circle(map_canvas, (current_vertex.x, current_vertex.y), resolution, visited_colour, -1, cv2.LINE_AA)
 
         # To save the Video
         len_number = len(str(video_count))
-        number_name = "0"*(6-len_number)
-        cv2.imwrite('A_Star_Video_Images/' + number_name+str(video_count) + '.jpg', map_canvas)
+        number_name = "0" * (6 - len_number)
+        cv2.imwrite('A_Star_Video_Images/' + number_name + str(video_count) + '.jpg', map_canvas)
         video_count += 1
 
         closed_list.append(current_vertex)
@@ -117,9 +115,6 @@ def A_Star_Solve(graph, starting_vertex, goal_vertex):
 
         for neighbour, weight in neighbours_dictionary:
 
-            print('Neighbour Vertex ... ')
-            printNode(neighbour)
-
             # Gets the equivalent node from the graph
             neighbour = getSameNode(neighbour, graph_vertices)
 
@@ -134,11 +129,6 @@ def A_Star_Solve(graph, starting_vertex, goal_vertex):
             neighbour_h_cost = EuclideanHeuristic(neighbour, goal_vertex)
             # f_cost is the sum of h_cost and g_cost
             neighbour_f_cost = neighbour_g_cost + neighbour_h_cost
-
-            print('Cost to this neighbour g, h, f... ', neighbour_g_cost,
-                  neighbour_h_cost, neighbour_f_cost)
-
-            print('Previously stored dist to this neighbour ... ', distances[neighbour])
 
             # If the distance to the node is less than the
             # previously stored distance to that neighbour,
