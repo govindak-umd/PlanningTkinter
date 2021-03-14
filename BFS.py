@@ -70,8 +70,10 @@ def doBFS():
     """
     node_start = mouse_start_node
     node_goal = mouse_goal_node
+    time_s_tk = time.time()
     bfs_tk = BreadthFirstSearch(graph_generated, node_start, node_goal)
     bfs_tk.solveBreadthFirstSearch(node_start)
+    print('Total Time for execution : ', time.time() - time_s_tk, ' seconds')
     image_folder_name = "BFS_Video_Images"
     file = "BFS_Video"
     GenerateVideo(image_folder_name, file, video_folder="Videos")

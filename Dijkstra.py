@@ -6,6 +6,7 @@ from data_structures import PriorityQueue
 from utils import GenerateVideo
 import time
 
+
 def DijkstraSolve(graph, starting_vertex, goal_vertex):
     """
     Function to solve the graph through Dijkstra's Algorithm
@@ -102,8 +103,9 @@ def doDijkstra():
     """
     node_start = mouse_start_node
     node_goal = mouse_goal_node
-    # Run the Dijkstra Solve Function
+    time_s_tk = time.time()
     DijkstraSolve(cost_graph_generated, node_start, node_goal)
+    print('Total Time for execution : ', time.time() - time_s_tk, ' seconds')
     image_folder_name = "Dijkstra_Video_Images"
     file = "Dijkstra_Video"
     GenerateVideo(image_folder_name, file, video_folder="Videos")
@@ -117,7 +119,7 @@ if __name__ == "__main__":
     time_s = time.time()
     # Run the Dijkstra Solve Function
     DijkstraSolve(cost_graph_generated, clicked_start, clicked_goal)
-    print('Total Time for execution : ',  time.time() - time_s, ' seconds')
+    print('Total Time for execution : ', time.time() - time_s, ' seconds')
     image_folder = "Dijkstra_Video_Images"
     file_name = "Dijkstra_Video"
     GenerateVideo(image_folder, file_name, video_folder="Videos")

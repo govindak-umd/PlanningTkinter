@@ -161,8 +161,9 @@ def doAStarPathPlanning():
     """
     node_start = mouse_start_node
     node_goal = mouse_goal_node
-    # Run the A Star Solve Function
+    time_s_tk = time.time()
     A_Star_Solve(cost_graph_generated, node_start, node_goal)
+    print('Total Time for execution : ', time.time() - time_s_tk, ' seconds')
     image_folder_name = "A_Star_Video_Images"
     file_name = "A_star_Video"
     GenerateVideo(image_folder_name, file_name, video_folder="Videos")
