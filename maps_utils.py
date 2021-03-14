@@ -21,6 +21,7 @@ goal_colour = (0, 255, 0)
 # Cost to neighbours
 cost = 1
 
+
 # Node class
 class Node:
     def __init__(self, x, y):

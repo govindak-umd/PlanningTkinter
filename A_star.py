@@ -43,8 +43,10 @@ def A_Star_Solve(graph, starting_vertex, goal_vertex):
 
     starting_vertex = getSameNode(starting_vertex, graph_vertices)
 
-    # Initializes the Priority Queue
+    # Initializes the Priority Queue, which is our open list
     priority_queue = PriorityQueue()
+
+    # Adding start node to the open list
     priority_queue.insert_pq(0, starting_vertex)
 
     closed_list = []
@@ -75,16 +77,18 @@ def A_Star_Solve(graph, starting_vertex, goal_vertex):
 
         for neighbour, weight in neighbours_dictionary:
 
-            # draws the circle
-            cv2.circle(map_canvas, (neighbour.x, neighbour.y), resolution, visited_colour, -1, cv2.LINE_AA)
-
             # Gets the equivalent node from the graph
             neighbour = getSameNode(neighbour, graph_vertices)
 
+            # Checking if the neighbour is in the closed list
+            if checkinThis(neighbour, closed_list):
+                continue
+
             # Adds the weight to the distance to reach the current node so far
             g_cost = current_distance + weight
-            # h_cost = 0, for Dijkstra
-            h_cost = ManhattanHeuristic(neighbour, goal_vertex)
+            # h_cost = 0, for Dijkstra,
+            # Can have an Euclidean, or a Manhattan Heuristic
+            h_cost = EuclideanHeuristic(neighbour, goal_vertex)
             # f_cost is the sum of h_cost and g_cost
             f_cost = g_cost + h_cost
 
@@ -92,10 +96,14 @@ def A_Star_Solve(graph, starting_vertex, goal_vertex):
             # previously stored distance to that neighbour,
 
             if f_cost < distances[neighbour]:
+
+                # draws the circle
+                cv2.circle(map_canvas, (neighbour.x, neighbour.y), resolution, visited_colour, -1, cv2.LINE_AA)
+
                 # print('Distance so far : ', distance)
                 # Replace the distance value
 
-                distances[neighbour] = g_cost
+                distances[neighbour] = f_cost
 
                 # Shows the traversal on map
                 cv2.imshow("Searching map", map_canvas)
@@ -110,7 +118,8 @@ def A_Star_Solve(graph, starting_vertex, goal_vertex):
                 # per the rules of the Priority Queue Class.
                 # This new neighbour will be the one that can be traversed
                 # to with the lowest cost
-                priority_queue.insert_pq(g_cost, neighbour)
+
+                priority_queue.insert_pq(f_cost, neighbour)
 
 
 # Main function to run A Star

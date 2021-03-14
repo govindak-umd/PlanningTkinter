@@ -1,3 +1,6 @@
+from graph import getSameNode, cost_graph_generated, compareNodes, graph_generated, checkinThis, printNode
+
+
 # Priority Queue Class
 class PriorityQueue:
     """
@@ -41,3 +44,9 @@ class PriorityQueue:
         """
         # print('Length of queue : >> ', len(self.queue))
         return len(self.queue)
+
+    def checkinPQ(self,node_to_check):
+        for all_tuples in self.queue:
+            if compareNodes(all_tuples[1],node_to_check):
+                return True
+        return False
