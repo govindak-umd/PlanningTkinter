@@ -1,9 +1,9 @@
 import cv2
 from map import map_canvas, mouse_start_node, mouse_goal_node
 from graph import getSameNode, cost_graph_generated
-from maps_utils import resolution, pointEncompassed, visited_colour
+from maps_utils import Node, resolution, pointEncompassed, visited_colour
 from data_structures import PriorityQueue
-
+from utils import GenerateVideo
 
 def DijkstraSolve(graph, starting_vertex, goal_vertex):
     """
@@ -17,6 +17,7 @@ def DijkstraSolve(graph, starting_vertex, goal_vertex):
     :type       goal_vertex:      Node type
     """
     goal_reached = 0
+    video_count = 0
 
     # Returns the vertices of the graph
     graph_vertices = graph.getVertices()
@@ -34,6 +35,15 @@ def DijkstraSolve(graph, starting_vertex, goal_vertex):
 
         # Gets the node as per the priority queue
         current_distance, current_vertex = priority_queue.pop_pq()
+
+        # draws the circle
+        cv2.circle(map_canvas, (current_vertex.x, current_vertex.y), resolution, visited_colour, -1, cv2.LINE_AA)
+
+        # takes the video
+        len_number = len(str(video_count))
+        number_name = "0"*(6-len_number)
+        cv2.imwrite('Dijkstra_Video_Images/' + number_name+str(video_count) + '.jpg', map_canvas)
+        video_count += 1
 
         # Gets the equivalent node from the graph
         current_vertex = getSameNode(current_vertex, graph_vertices)
@@ -53,8 +63,6 @@ def DijkstraSolve(graph, starting_vertex, goal_vertex):
 
         for neighbour, weight in neighbours_dictionary:
 
-            # draws the circle
-            cv2.circle(map_canvas, (neighbour.x, neighbour.y), resolution, visited_colour, -1, cv2.LINE_AA)
             # Adds the weight to the distance to reach the current node so far
             distance = current_distance + weight
 
@@ -91,6 +99,8 @@ if __name__ == "__main__":
     final_img = map_canvas.copy()
     node_start = mouse_start_node
     node_goal = mouse_goal_node
-
     # Run the Dijkstra Solve Function
     DijkstraSolve(cost_graph_generated, node_start, node_goal)
+    image_folder = "Dijkstra_Video_Images"
+    file_name = "Dijkstra_Video_Images"
+    GenerateVideo(image_folder, file_name, video_folder="Videos")

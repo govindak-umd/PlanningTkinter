@@ -1,8 +1,9 @@
 import cv2
 from map import map_canvas, mouse_start_node, mouse_goal_node
 from graph import getSameNode, cost_graph_generated, compareNodes, graph_generated, checkinThis, printNode
-from maps_utils import resolution, pointEncompassed, visited_colour, path_colour
+from maps_utils import Node, resolution, pointEncompassed, visited_colour, path_colour
 from data_structures import PriorityQueue
+from utils import GenerateVideo
 
 
 def EuclideanHeuristic(start_node, goal_node):
@@ -34,10 +35,13 @@ def A_Star_Solve(graph, starting_vertex, goal_vertex):
     # g is the distance between the current node and the start node
     # h is the distance between the current node adn the goal node (heuristic)
 
+    video_count = 0
     goal_reached = 0
 
     # Returns the vertices of the graph
     graph_vertices = graph.getVertices()
+
+    starting_vertex = getSameNode(starting_vertex, graph_vertices)
 
     distances = {vertex: float('infinity') for vertex in graph_vertices}
     distances[starting_vertex] = 0
@@ -58,6 +62,17 @@ def A_Star_Solve(graph, starting_vertex, goal_vertex):
         # Gets the node as per the priority queue
         current_distance, current_vertex = priority_queue.pop_pq()
 
+        print('Popped Vertex ... ')
+        printNode(current_vertex)
+        # draws the circle
+        cv2.circle(map_canvas, (current_vertex.x, current_vertex.y), resolution, visited_colour, -1, cv2.LINE_AA)
+
+        # takes the video
+        len_number = len(str(video_count))
+        number_name = "0"*(6-len_number)
+        cv2.imwrite('A_Star_Video_Images/' + number_name+str(video_count) + '.jpg', map_canvas)
+        video_count += 1
+
         closed_list.append(current_vertex)
 
         # Gets the equivalent node from the graph
@@ -75,6 +90,9 @@ def A_Star_Solve(graph, starting_vertex, goal_vertex):
 
         for neighbour, weight in neighbours_dictionary:
 
+            print('Neighbour Vertex ... ')
+            printNode(neighbour)
+
             # Gets the equivalent node from the graph
             neighbour = getSameNode(neighbour, graph_vertices)
 
@@ -90,12 +108,14 @@ def A_Star_Solve(graph, starting_vertex, goal_vertex):
             # f_cost is the sum of h_cost and g_cost
             neighbour_f_cost = neighbour_g_cost + neighbour_h_cost
 
+            print('Cost to this neighbour g, h, f... ', neighbour_g_cost,
+                  neighbour_h_cost, neighbour_f_cost)
+
+            print('Previously stored dist to this neighbour ... ', distances[neighbour])
+
             # If the distance to the node is less than the
             # previously stored distance to that neighbour,
             if neighbour_f_cost < distances[neighbour]:
-
-                # draws the circle
-                cv2.circle(map_canvas, (neighbour.x, neighbour.y), resolution, visited_colour, -1, cv2.LINE_AA)
 
                 # print('Distance so far : ', distance)
                 # Replace the distance value
@@ -121,6 +141,8 @@ if __name__ == "__main__":
     final_img = map_canvas.copy()
     node_start = mouse_start_node
     node_goal = mouse_goal_node
-
     # Run the A Star Solve Function
     A_Star_Solve(cost_graph_generated, node_start, node_goal)
+    image_folder = "A_Star_Video_Images"
+    file_name = "A_star_Video"
+    GenerateVideo(image_folder, file_name, video_folder="Videos")
