@@ -2,6 +2,9 @@
 
 View planning on Trello board [here](https://trello.com/b/A9lTAano/planningtkinter).
 
+This is a pet project that will help you visualize the 
+various search algorithms.
+
 Search Algorithms implemented so far :
 
  - Breadth First Search Algorithm
