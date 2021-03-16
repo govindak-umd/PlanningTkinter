@@ -10,7 +10,7 @@ Search Algorithms implemented so far :
  - Breadth First Search Algorithm
    
 <p align="center">
-  <img height="250" src="BFS_Video_Images/000390.png">
+  <img height="250" src="BFS_Video_Images/000390.jpg">
 </p>
 
  - Depth First Search Algorithm
