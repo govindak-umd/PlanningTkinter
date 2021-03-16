@@ -61,4 +61,9 @@ Once done, you can execute the programs in two different ways:
 - Wait for the execution 
 - Hit *Exit* when done.
 
+In this case the menu looks like this:
+
+<p align="center">
+  <img height="400" src="Images/tkinter_menu.png">
+</p>
  
