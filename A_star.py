@@ -84,17 +84,11 @@ def A_Star_Solve(graph, starting_vertex, goal_vertex):
 
     closed_list = []
 
-    print('Starting Node')
-    printNode(starting_vertex)
-
     # Runs while loop until goal node is not found
     while open_list.len_pq() > 0 and goal_reached == 0:
 
         # Gets the node as per the priority queue
         current_distance, current_vertex = open_list.pop_pq()
-        print('current_vertex')
-        printNode(current_vertex)
-        print('Cost : ', current_distance)
 
         # draws the circle
         cv2.circle(map_canvas, (current_vertex.x, current_vertex.y), resolution, visited_colour, -1,
@@ -121,10 +115,7 @@ def A_Star_Solve(graph, starting_vertex, goal_vertex):
 
         # A dictionary containing the neighbours and the weight/cost to reach them
         neighbours_dictionary = cost_graph_generated.getNeighbors(current_vertex).items()
-        print(' ----- Neighbours -----  ')
         for neighbour, weight in neighbours_dictionary:
-            print('neighbour ... ')
-            printNode(neighbour)
 
             # Gets the equivalent node from the graph
             neighbour = getSameNode(neighbour, graph_vertices)
@@ -134,39 +125,34 @@ def A_Star_Solve(graph, starting_vertex, goal_vertex):
                 continue
 
             # Adds the weight to the distance to reach the current node so far
-            neighbour_g_cost = weight
+            neighbour_g_cost = EuclideanHeuristic(neighbour, starting_vertex)
             # h_cost = 0, for Dijkstra,
             # Can have an Euclidean, or a Manhattan Heuristic
             neighbour_h_cost = EuclideanHeuristic(neighbour, goal_vertex)
+            # neighbour_h_cost = 0
             # f_cost is the sum of h_cost and g_cost
             neighbour_f_cost = neighbour_g_cost + neighbour_h_cost
-            print('distances[neighbour] :', distances[neighbour], '| neighbour_g_cost : ', neighbour_g_cost,
-                  '| neighbour_h_cost : ', neighbour_h_cost, '| neighbour_f_cost : ', neighbour_f_cost)
             # If the distance to the node is less than the
             # previously stored distance to that neighbour,
 
-            if open_list.checkinPQ(neighbour):
-                if neighbour_g_cost < distances[neighbour]:
+            if neighbour_f_cost < distances[neighbour]:
 
+                # Replace the distance value
 
-                    # print('Distance so far : ', distance)
-                    # Replace the distance value
+                distances[neighbour] = neighbour_f_cost
 
-                    distances[neighbour] = neighbour_f_cost
+                # Shows the traversal on map
+                cv2.imshow("Searching map", map_canvas)
 
-                    # Shows the traversal on map
-                    cv2.imshow("Searching map", map_canvas)
+                if cv2.waitKey(20) & 0xFF == ord('q'):
+                    break
 
-                    if cv2.waitKey(20) & 0xFF == ord('q'):
-                        break
-
-                    # Inserts the new node back into the priority queue as
-                    # per the rules of the Priority Queue Class.
-                    # This new neighbour will be the one that can be traversed
-                    # to with the lowest cost
+                # Inserts the new node back into the priority queue as
+                # per the rules of the Priority Queue Class.
+                # This new neighbour will be the one that can be traversed
+                # to with the lowest cost
 
             open_list.insert_pq(neighbour_f_cost, neighbour)
-        print('------------------')
 
 
 def doAStarPathPlanning():
