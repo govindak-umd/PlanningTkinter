@@ -21,6 +21,7 @@ class DepthFirstSearch:
         self.visited = []
         self.goal_reached = False
         self.count = 0
+        self.video_count = 0
 
     def solveDepthFirstSearch(self, node):
         """
@@ -30,7 +31,7 @@ class DepthFirstSearch:
         :type       node:  Node type
         """
 
-        video_count = 0
+
 
         # Checking if the goal is within the radius
         if pointEncompassed(node, self.goal_node):
@@ -45,12 +46,13 @@ class DepthFirstSearch:
         else:
             self.visited.append(node)
             cv2.circle(map_canvas, (node.x, node.y), resolution, visited_colour, -1, cv2.LINE_AA)
+
             # To save the Video
-            len_number = len(str(video_count))
+            len_number = len(str(self.video_count))
 
             number_name = "0" * (6 - len_number)
-            cv2.imwrite('DFS_Video_Images/' + number_name + str(video_count) + '.jpg', map_canvas)
-            video_count += 1
+            cv2.imwrite('DFS_Video_Images/' + number_name + str(self.video_count) + '.jpg', map_canvas)
+            self.video_count += 1
 
             neighbours = self.graph.getNeighbors(node)
 
