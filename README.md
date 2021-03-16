@@ -8,9 +8,28 @@ various search algorithms.
 Search Algorithms implemented so far :
 
  - Breadth First Search Algorithm
+   
+<p align="center">
+  <img height="500" src="BFS_Video_Images/3_acc.png">
+</p>
+
  - Depth First Search Algorithm
+   
+<p align="center">
+  <img height="500" src="DFS_Video_Images/000469.jpg">
+</p>
+
  - Dijkstra's Search Algorithm
+   
+<p align="center">
+  <img height="500" src="Dijkstra_Video_Images/000390.jpg">
+</p>
+
  - A * Search Algorithm
+
+<p align="center">
+  <img height="500" src="A_Star_Video_Images/000123.jpg">
+</p>
 
 ## How to run the program
 
