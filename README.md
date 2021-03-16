@@ -45,14 +45,14 @@ Once done, you can execute the programs in two different ways:
    
 2) Run the menu, which will allow you to choose which planning algorithm to run
 
-### Case 1
+### Method 1
 
 - Run the individual planning files
 - Left click to set the start node. **This Node is indicated in Red**
 - Right click to set the goal node. **This Node is indicated in Green**
 - Wait for the execution 
 
-### Case 2
+### Method 2
 
 - Run the *all_path_planning.py* file
 - Left click to set the start node. **This Node is indicated in Red**
