@@ -8,6 +8,7 @@ from utils import GenerateVideo
 import time
 import random
 import numpy as np
+import math
 
 
 class RRT:
@@ -54,24 +55,32 @@ class RRT:
                 closes_tree_node = node
         return closes_tree_node
 
-    def checkPathCollision(self,node_from, node_to):
+    def checkPathCollision(self, node_from, node_to):
         # check if the path between node_from and
         # node_end is collision free
         pass
 
-    def getPointwithinthreshold(self,node_from, node_to):
+    def getPointWithinThreshold(self, node_from, node_to):
 
-        if DistanceBetween(node_from,node_to) < self.threshold:
+        if DistanceBetween(node_from, node_to) < self.threshold:
             return node_to
+        else:
+            from_x, from_y = node_from.x, node_from.y
+            to_x, to_y = node_to.x, node_to.y
+            theta = math.atan2(to_y - from_y, to_x - from_x)
+            new_point = (from_x + self.threshold * math.cos(theta), from_y + self.threshold * math.sin(theta))
+            return new_point
 
-        e
     def SolveRRT(self, starting_vertex, goal_vertex):
         self.vertices.add(starting_vertex)
         for i in range(self.iterations - 1000):
             random_generated_node = self.RRT_generateRandomPoint()
             closes_node_to_random_point = self.findClosestPointInTree(random_generated_node)
+            new_point = self.getPointWithinThreshold(closes_node_to_random_point,random_generated_node)
 
-            # Work on the steer part here
+            # Ideally add a code here to make sure that the
+            # straight path between the two points won't collide
+
 
 
         # while True:
