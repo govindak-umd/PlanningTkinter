@@ -59,7 +59,6 @@ def SolveRRT(starting_vertex, goal_vertex):
                     print('Video Generating ....')
 
 
-
 if __name__ == "__main__":
     clicked_start = mouse_start_node
     clicked_goal = mouse_goal_node
