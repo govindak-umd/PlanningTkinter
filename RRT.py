@@ -16,7 +16,7 @@ class RRT:
         self.graph = graph
         self.start_node = start_node
         self.goal_node = goal_node
-        self.visited = set()
+        self.vertices = set()
         self.path = []
         self.goal_reached = False
         self.count = 0
@@ -45,14 +45,28 @@ class RRT:
                 continue
             return node_random
 
-    def findClosestPointInTree(self, node, vertices):
+    def findClosestPointInTree(self, node):
+        min_dist = float('inf')
+        for vertex in self.vertices:
+            calc_distance = DistanceBetween(vertex, node)
+            if calc_distance < min_dist:
+                min_dist = calc_distance
+                closes_tree_node = node
+        return closes_tree_node
+
+    def checkPathCollision(self,node_from, node_to):
+        # check if the path between node_from and
+        # node_end is collision free
         pass
 
     def SolveRRT(self, starting_vertex, goal_vertex):
-        self.visited.add(starting_vertex)
-        for i in range(self.iterations-1000):
+        self.vertices.add(starting_vertex)
+        for i in range(self.iterations - 1000):
             random_generated_node = self.RRT_generateRandomPoint()
-            printNode(random_generated_node)
+            closes_node_to_random_point = self.findClosestPointInTree(random_generated_node)
+
+            # Work on the steer part here
+
 
         # while True:
         #     nodes_traversed += 1
