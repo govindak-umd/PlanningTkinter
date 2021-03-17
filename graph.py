@@ -90,7 +90,7 @@ def printNode(node):
     print('Node is : ', node.x, ',', node.y)
 
 
-def checkNodeinObstacle(node, img):
+def checkNodeInObstacle(node, img):
     """
     To check the color of the image at a particular Node
     :param node: node to check
@@ -175,7 +175,7 @@ def generateCostGraph():
                 node = Node(col_range, row_range)
 
                 # Adding only white cells into the graph
-                if not checkNodeinObstacle(node, map_canvas):
+                if not checkNodeInObstacle(node, map_canvas):
                     # Parent Node
 
                     cost_graph[node] = {}
@@ -183,19 +183,19 @@ def generateCostGraph():
                     # Child Nodes
 
                     node_top = Node(col_range - resolution, row_range)
-                    if not checkNodeinObstacle(node_top, map_canvas):
+                    if not checkNodeInObstacle(node_top, map_canvas):
                         cost_graph[node][node_top] = cost
 
                     node_below = Node(col_range + resolution, row_range)
-                    if not checkNodeinObstacle(node_below, map_canvas):
+                    if not checkNodeInObstacle(node_below, map_canvas):
                         cost_graph[node][node_below] = cost
 
                     node_right = Node(col_range, row_range + resolution)
-                    if not checkNodeinObstacle(node_right, map_canvas):
+                    if not checkNodeInObstacle(node_right, map_canvas):
                         cost_graph[node][node_right] = cost
 
                     node_left = Node(col_range, row_range - resolution)
-                    if not checkNodeinObstacle(node_left, map_canvas):
+                    if not checkNodeInObstacle(node_left, map_canvas):
                         cost_graph[node][node_left] = cost
 
             # When obstacles are NOT present
@@ -243,7 +243,7 @@ def generateGraph():
 
                 node = Node(col_range, row_range)
 
-                if not checkNodeinObstacle(node, map_canvas):
+                if not checkNodeInObstacle(node, map_canvas):
                     # Parent Node
 
                     graph_dic[node] = []
@@ -254,25 +254,25 @@ def generateGraph():
                     # boundary / obstacle
 
                     node_top = Node(col_range - resolution, row_range)
-                    if not checkNodeinObstacle(node_top, map_canvas):
+                    if not checkNodeInObstacle(node_top, map_canvas):
                         graph_dic[node].append(node_top)
 
                     # Checking for the child node to not be in a
                     # boundary / obstacle
                     node_below = Node(col_range + resolution, row_range)
-                    if not checkNodeinObstacle(node_below, map_canvas):
+                    if not checkNodeInObstacle(node_below, map_canvas):
                         graph_dic[node].append(node_below)
 
                     # Checking for the child node to not be in a
                     # boundary / obstacle
                     node_right = Node(col_range, row_range + resolution)
-                    if not checkNodeinObstacle(node_right, map_canvas):
+                    if not checkNodeInObstacle(node_right, map_canvas):
                         graph_dic[node].append(node_right)
 
                     # Checking for the child node to not be in a
                     # boundary / obstacle
                     node_left = Node(col_range, row_range - resolution)
-                    if not checkNodeinObstacle(node_left, map_canvas):
+                    if not checkNodeInObstacle(node_left, map_canvas):
                         graph_dic[node].append(node_left)
 
             # When obstacles are NOT present
