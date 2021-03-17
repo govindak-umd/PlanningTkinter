@@ -43,3 +43,25 @@ def startMessage():
     print('Left Click a point as a start Point')
     print('Right Click a point as a goal Point')
     print('Hit -Esc- after that')
+
+
+def DistanceBetween(start_node, goal_node):
+    """
+    Function to calculate the Euclidean Distance
+    :param start_node: start node
+    :type start_node: Node
+    :param goal_node: Goal Node
+    :type goal_node: Node
+    :return: Euclidean distance units
+    :rtype: Integer
+    """
+    x_1 = start_node.x
+    y_1 = start_node.y
+
+    x_2 = goal_node.x
+    y_2 = goal_node.y
+
+    euc_distance = ((x_2 - x_1) ** 2 + (y_2 - y_1) ** 2) ** 0.5
+
+    return euc_distance
+

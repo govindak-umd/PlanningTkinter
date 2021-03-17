@@ -114,7 +114,6 @@ def doDijkstra():
 
 # Main function to run Dijkstra
 if __name__ == "__main__":
-    final_img = map_canvas.copy()
     clicked_start = mouse_start_node
     clicked_goal = mouse_goal_node
     time_s = time.time()
