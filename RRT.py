@@ -49,12 +49,16 @@ class RRT:
 
     def findClosestPointInTree(self, node):
         min_dist = float('inf')
+        print('Point to check in vertices of length > ', len(self.vertices))
+        printNode(node)
         for vertex in self.vertices:
             calc_distance = DistanceBetween(vertex, node)
             if calc_distance < min_dist:
                 min_dist = calc_distance
-                closes_tree_node = node
-        return closes_tree_node
+                closest_tree_node = vertex
+        print('Closest Point : ')
+        printNode(closest_tree_node)
+        return closest_tree_node
 
     def checkPathCollision(self, node_from, node_to):
         # check if the path between node_from and
@@ -64,12 +68,17 @@ class RRT:
     def getPointWithinThreshold(self, node_from, node_to):
 
         if DistanceBetween(node_from, node_to) < self.threshold:
+
             return node_to
         else:
+            print('Point too far ... ')
             from_x, from_y = node_from.x, node_from.y
             to_x, to_y = node_to.x, node_to.y
             theta = math.atan2(to_y - from_y, to_x - from_x)
-            new_point = (from_x + self.threshold * math.cos(theta), from_y + self.threshold * math.sin(theta))
+            node_x = int(from_x + self.threshold * math.cos(theta))
+            node_y = int(from_y + self.threshold * math.sin(theta))
+            new_point = Node(node_x, node_y)
+
             return new_point
 
     def setParent(self, parent_point, child_point):
@@ -77,21 +86,21 @@ class RRT:
 
     def SolveRRT(self, starting_vertex, goal_vertex):
         self.vertices.add(starting_vertex)
+
         for i in range(self.iterations):
             random_generated_node = self.RRT_generateRandomPoint()
-            cv2.circle(map_canvas, (random_generated_node.x, random_generated_node.y), resolution, visited_colour, -1,
-                       cv2.LINE_AA)
-            closes_node_to_random_point = self.findClosestPointInTree(random_generated_node)
-            new_point = self.getPointWithinThreshold(closes_node_to_random_point, random_generated_node)
+            closest_node_to_random_point = self.findClosestPointInTree(random_generated_node)
+            new_point = self.getPointWithinThreshold(closest_node_to_random_point, random_generated_node)
 
             self.vertices.add(new_point)
-            printNode(closes_node_to_random_point)
-            printNode(new_point)
-            self.setParent(closes_node_to_random_point, new_point)
 
-            cv2.line(map_canvas, (closes_node_to_random_point.x, closes_node_to_random_point.y), (new_point.x, new_point.y),
-                     path_colour, 1, cv2.LINE_AA)
+            self.setParent(closest_node_to_random_point, new_point)
+
+            cv2.line(map_canvas, (closest_node_to_random_point.x, closest_node_to_random_point.y),
+                     (new_point.x, new_point.y), path_colour, 1, cv2.LINE_AA)
+
             cv2.imshow("Searching map", map_canvas)
+
             if cv2.waitKey(20) & 0xFF == ord('q'):
                 break
             if pointEncompassed(new_point, goal_vertex):
