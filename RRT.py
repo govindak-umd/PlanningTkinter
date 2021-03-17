@@ -2,7 +2,7 @@ import cv2
 from map import map_canvas, mouse_start_node, mouse_goal_node
 from graph import getSameNode, cost_graph_generated, checkinThis, printNode
 from maps_utils import DistanceBetween, border_size, DistanceBetween, map_size, Node, resolution, pointEncompassed, \
-    visited_colour
+    visited_colour, path_colour
 from data_structures import PriorityQueue
 from utils import GenerateVideo
 import time
@@ -27,7 +27,7 @@ def RRT_ToNextNode(node_from_list, node_rand):
     if DistanceBetween(node_from_list, node_rand) < rrt_thresh:
         return node_rand
     else:
-        pass
+        return node_from_list
 
 
 # Generate a random node for adding to tree for traversal
@@ -48,19 +48,35 @@ def SolveRRT(starting_vertex, goal_vertex):
     global rrt_num_nodes
     global rrt_thresh
     global rrt_goal_radius
+    goal_reached = 0
 
+    nodes.append(starting_vertex)
     while True:
         nodes_traversed += 1
         if nodes_traversed < rrt_num_nodes:
             foundNextNode = False
-            while not foundNextNode:
+            while not foundNextNode and goal_reached == 0:
                 current_rand_node = RRT_generateRandomPoint()
+                # draws the circle
+                cv2.circle(map_canvas, (current_rand_node.x, current_rand_node.y), resolution, visited_colour, -1,
+                           cv2.LINE_AA)
+
                 curr_parent = nodes[0]
+
+                print('curr_parent : ', curr_parent )
+                cv2.line(map_canvas,(current_rand_node.x, current_rand_node.y),(curr_parent.x, curr_parent.y),
+                         path_colour, 1, cv2.LINE_AA)
+                # Shows the traversal on map
+                cv2.imshow("Searching map", map_canvas)
+
+                if cv2.waitKey(20) & 0xFF == ord('q'):
+                    break
                 for n in nodes:
                     if DistanceBetween(n, current_rand_node) < DistanceBetween(curr_parent, current_rand_node):
                         new_n = RRT_ToNextNode(n, current_rand_node)
                         if not checkinObstacle(new_n):
                             curr_parent = new_n
+                            nodes.append(curr_parent)
                             foundNextNode = True
 
                 if pointEncompassed(current_rand_node, goal_vertex):
@@ -73,6 +89,6 @@ def SolveRRT(starting_vertex, goal_vertex):
 if __name__ == "__main__":
     clicked_start = mouse_start_node
     clicked_goal = mouse_goal_node
-    # SolveRRT(clicked_start, clicked_goal)
+    SolveRRT(clicked_start, clicked_goal)
     # Checks if the goal is within the radius specified
     # in the utils file
