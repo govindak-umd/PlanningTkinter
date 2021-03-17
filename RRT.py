@@ -22,7 +22,8 @@ class RRT:
         self.goal_reached = False
         self.count = 0
         self.iterations = 2000
-        self.threshold = 3
+        self.threshold = 5
+        self.video_count = 0
         self.parent_dic = {}
 
     # Check if a point is in an obstacle
@@ -84,6 +85,10 @@ class RRT:
     def setParent(self, parent_point, child_point):
         self.parent_dic[child_point] = parent_point
 
+    def NoCollisionDetected(self, node_from, node_end):
+
+        pass
+
     def SolveRRT(self, starting_vertex, goal_vertex):
         self.vertices.add(starting_vertex)
 
@@ -91,6 +96,9 @@ class RRT:
             random_generated_node = self.RRT_generateRandomPoint()
             closest_node_to_random_point = self.findClosestPointInTree(random_generated_node)
             new_point = self.getPointWithinThreshold(closest_node_to_random_point, random_generated_node)
+
+            # Ideally add a code here to make sure that the
+            # straight path between the two points won't collide
 
             self.vertices.add(new_point)
 
@@ -101,6 +109,12 @@ class RRT:
 
             cv2.imshow("Searching map", map_canvas)
 
+            # To save the video
+            len_number = len(str(self.video_count))
+            number_name = "0" * (6 - len_number)
+            cv2.imwrite('RRT_Video_Images/' + number_name + str(self.video_count) + '.jpg', map_canvas)
+            self.video_count+=1
+
             if cv2.waitKey(20) & 0xFF == ord('q'):
                 break
             if pointEncompassed(new_point, goal_vertex):
@@ -110,52 +124,14 @@ class RRT:
                 print('Video Generating ....')
                 break
 
-            # Ideally add a code here to make sure that the
-            # straight path between the two points won't collide
-
-        # while True:
-        #     nodes_traversed += 1
-        #     if nodes_traversed < rrt_num_nodes:
-        #         foundNextNode = False
-        #         while not foundNextNode and goal_reached == 0:
-        #             nodes.pop(0)
-        #             print('len of nodes : ', len(nodes))
-        #             current_rand_node = RRT_generateRandomPoint()
-        #             # draws the circle
-        #             cv2.circle(map_canvas, (current_rand_node.x, current_rand_node.y), resolution, visited_colour, -1,
-        #                        cv2.LINE_AA)
-        #
-        #             curr_parent = nodes[0]
-        #
-        #             print('curr_parent : ', curr_parent)
-        #
-        #             for n in nodes:
-        #                 if DistanceBetween(n, current_rand_node) < DistanceBetween(curr_parent, current_rand_node):
-        #                     new_n = RRT_ToNextNode(n, current_rand_node)
-        #                     if not checkinObstacle(new_n):
-        #                         curr_parent = new_n
-        #                         foundNextNode = True
-        #
-        #             if pointEncompassed(current_rand_node, goal_vertex):
-        #                 print(' - - - GOAL FOUND - - - ')
-        #                 # Sets the value to True
-        #                 goal_reached = 1
-        #                 print('Video Generating ....')
-        #
-        #             nodes.append(curr_parent)
-        #             cv2.line(map_canvas, (current_rand_node.x, current_rand_node.y), (curr_parent.x, curr_parent.y),
-        #                      path_colour, 1, cv2.LINE_AA)
-        #             # Shows the traversal on map
-        #             cv2.imshow("Searching map", map_canvas)
-        #
-        #             if cv2.waitKey(20) & 0xFF == ord('q'):
-        #                 break
-
 
 if __name__ == "__main__":
     clicked_start = mouse_start_node
     clicked_goal = mouse_goal_node
+    time_s = time.time()
     rrt = RRT(graph_generated, clicked_start, clicked_goal)
     rrt.SolveRRT(clicked_start, clicked_goal)
-    # Checks if the goal is within the radius specified
-    # in the utils file
+    print('Total Time for execution : ', time.time() - time_s, ' seconds')
+    image_folder = "RRT_Video_Images"
+    file_name = "RRT_Video"
+    GenerateVideo(image_folder, file_name, video_folder="Videos")
