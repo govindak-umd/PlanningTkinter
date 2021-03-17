@@ -1,13 +1,10 @@
 import cv2
 from map import map_canvas, mouse_start_node, mouse_goal_node
-from graph import getSameNode, graph_generated, checkinThis, printNode
-from maps_utils import DistanceBetween, border_size, DistanceBetween, map_size, Node, resolution, pointEncompassed, \
-    visited_colour, path_colour
-from data_structures import PriorityQueue
+from graph import graph_generated, printNode
+from maps_utils import DistanceBetween, map_size, Node, pointEncompassed, path_colour
 from utils import GenerateVideo
 import time
 import random
-import numpy as np
 import math
 
 
@@ -15,6 +12,7 @@ class RRT:
     """
     RRT Class
     """
+
     def __init__(self, graph, start_node, goal_node):
         """
         RRT init function
@@ -38,28 +36,42 @@ class RRT:
         self.parent_dic = {}
 
     # Check if a point is in an obstacle
-    def checkinObstacle(self, node_check):
+    def checkInObstalce(self, node_check):
+        """
+        Check if a point is in the obstacle
+        :param node_check: node to check
+        :type node_check: Node
+        :return: True or False
+        :rtype: Boolean
+        """
         if map_canvas[node_check.x, node_check.y][0] == 0:
             return True
         return False
 
-    def RRT_ToNextNode(self, node_from_list, node_rand):
-        if DistanceBetween(node_from_list, node_rand) < self.threshold:
-            return node_rand
-        else:
-            return node_from_list
-
     # Generate a random node for adding to tree for traversal
     def RRT_generateRandomPoint(self):
+        """
+        Generate a random node
+        :return: a random node
+        :rtype: Node
+        """
         while True:
             x_rand = int(random.random() * map_size)
             y_rand = int(random.random() * map_size)
             node_random = Node(x_rand, y_rand)
-            if self.checkinObstacle(node_random):
+            if self.checkInObstalce(node_random):
                 continue
             return node_random
 
     def findClosestPointInTree(self, node):
+        """
+        Find the closest point the the node
+        in the vertices tree
+        :param node: Node to check
+        :type node: Node
+        :return: The closest node in the tree
+        :rtype: Node
+        """
         min_dist = float('inf')
         print('Point to check in vertices of length > ', len(self.vertices))
         printNode(node)
@@ -78,7 +90,16 @@ class RRT:
         pass
 
     def getPointWithinThreshold(self, node_from, node_to):
-
+        """
+        Function to make sure the random node is
+        within the threshold distance away from the parent
+        :param node_from: The previous parent
+        :type node_from: Node
+        :param node_to: The random node
+        :type node_to: Node
+        :return: The closer node
+        :rtype: Node
+        """
         if DistanceBetween(node_from, node_to) < self.threshold:
 
             return node_to
@@ -94,13 +115,26 @@ class RRT:
             return new_point
 
     def setParent(self, parent_point, child_point):
+        """
+        Set the parent of the node in the dictionary
+        :param parent_point: Parent Node
+        :type parent_point: Node
+        :param child_point: Child Node
+        :type child_point: Node
+        :return: Node
+        :rtype: Node
+        """
         self.parent_dic[child_point] = parent_point
 
-    def NoCollisionDetected(self, node_from, node_end):
-
-        pass
-
     def SolveRRT(self, starting_vertex, goal_vertex):
+        """
+        Solve the graph from start to end through
+        Rapidly Exploring Random Trees (RRT)
+        :param starting_vertex: Starting Node
+        :type starting_vertex: Node
+        :param goal_vertex: Goal Node
+        :type goal_vertex: Node
+        """
         self.vertices.add(starting_vertex)
 
         for i in range(self.iterations):
@@ -124,16 +158,31 @@ class RRT:
             len_number = len(str(self.video_count))
             number_name = "0" * (6 - len_number)
             cv2.imwrite('RRT_Video_Images/' + number_name + str(self.video_count) + '.jpg', map_canvas)
-            self.video_count+=1
+            self.video_count += 1
 
             if cv2.waitKey(20) & 0xFF == ord('q'):
                 break
             if pointEncompassed(new_point, goal_vertex):
                 print(' - - - GOAL FOUND - - - ')
-                # Sets the value to True
                 self.goal_reached = True
                 print('Video Generating ....')
                 break
+
+
+def doRRT():
+    """
+    RRT Function to be executed when
+    Tkinter Button is clicked
+    """
+    node_start = mouse_start_node
+    node_goal = mouse_goal_node
+    time_s_tk = time.time()
+    rrt_tk = RRT(graph_generated, node_start, node_goal)
+    rrt_tk.SolveRRT(node_start, node_goal)
+    print('Total Time for execution : ', time.time() - time_s_tk, ' seconds')
+    image_folder_name = "RRT_Video_Images"
+    file = "RRT_Video"
+    GenerateVideo(image_folder_name, file, video_folder="Videos")
 
 
 if __name__ == "__main__":
