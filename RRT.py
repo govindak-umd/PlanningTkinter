@@ -23,6 +23,7 @@ class RRT:
         self.count = 0
         self.iterations = 2000
         self.threshold = 3
+        self.parent_dic = {}
 
     # Check if a point is in an obstacle
     def checkinObstacle(self, node_check):
@@ -71,17 +72,37 @@ class RRT:
             new_point = (from_x + self.threshold * math.cos(theta), from_y + self.threshold * math.sin(theta))
             return new_point
 
+    def setParent(self, parent_point, child_point):
+        self.parent_dic[child_point] = parent_point
+
     def SolveRRT(self, starting_vertex, goal_vertex):
         self.vertices.add(starting_vertex)
-        for i in range(self.iterations - 1000):
+        for i in range(self.iterations):
             random_generated_node = self.RRT_generateRandomPoint()
+            cv2.circle(map_canvas, (random_generated_node.x, random_generated_node.y), resolution, visited_colour, -1,
+                       cv2.LINE_AA)
             closes_node_to_random_point = self.findClosestPointInTree(random_generated_node)
-            new_point = self.getPointWithinThreshold(closes_node_to_random_point,random_generated_node)
+            new_point = self.getPointWithinThreshold(closes_node_to_random_point, random_generated_node)
+
+            self.vertices.add(new_point)
+            printNode(closes_node_to_random_point)
+            printNode(new_point)
+            self.setParent(closes_node_to_random_point, new_point)
+
+            cv2.line(map_canvas, (closes_node_to_random_point.x, closes_node_to_random_point.y), (new_point.x, new_point.y),
+                     path_colour, 1, cv2.LINE_AA)
+            cv2.imshow("Searching map", map_canvas)
+            if cv2.waitKey(20) & 0xFF == ord('q'):
+                break
+            if pointEncompassed(new_point, goal_vertex):
+                print(' - - - GOAL FOUND - - - ')
+                # Sets the value to True
+                self.goal_reached = True
+                print('Video Generating ....')
+                break
 
             # Ideally add a code here to make sure that the
             # straight path between the two points won't collide
-
-
 
         # while True:
         #     nodes_traversed += 1
