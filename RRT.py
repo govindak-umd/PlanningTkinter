@@ -59,6 +59,12 @@ class RRT:
         # node_end is collision free
         pass
 
+    def getPointwithinthreshold(self,node_from, node_to):
+
+        if DistanceBetween(node_from,node_to) < self.threshold:
+            return node_to
+
+        e
     def SolveRRT(self, starting_vertex, goal_vertex):
         self.vertices.add(starting_vertex)
         for i in range(self.iterations - 1000):
