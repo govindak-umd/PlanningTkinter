@@ -1,7 +1,8 @@
 import cv2
 from map import map_canvas, mouse_start_node, mouse_goal_node
 from graph import getSameNode, cost_graph_generated, checkinThis, printNode
-from maps_utils import border_size, DistanceBetween, map_size, Node, resolution, pointEncompassed, visited_colour
+from maps_utils import DistanceBetween, border_size, DistanceBetween, map_size, Node, resolution, pointEncompassed, \
+    visited_colour
 from data_structures import PriorityQueue
 from utils import GenerateVideo
 import time
@@ -21,8 +22,12 @@ def checkinObstacle(node_check):
     return False
 
 
-def RRT_ToNextNode(node_1, node_2):
-    pass
+def RRT_ToNextNode(node_from_list, node_rand):
+    global rrt_thresh
+    if DistanceBetween(node_from_list, node_rand) < rrt_thresh:
+        return node_rand
+    else:
+        pass
 
 
 # Generate a random node for adding to tree for traversal
@@ -49,10 +54,16 @@ def SolveRRT(starting_vertex, goal_vertex):
         if nodes_traversed < rrt_num_nodes:
             foundNextNode = False
             while not foundNextNode:
-                current_vertex = RRT_generateRandomPoint()
+                current_rand_node = RRT_generateRandomPoint()
                 curr_parent = nodes[0]
+                for n in nodes:
+                    if DistanceBetween(n, current_rand_node) < DistanceBetween(curr_parent, current_rand_node):
+                        new_n = RRT_ToNextNode(n, current_rand_node)
+                        if not checkinObstacle(new_n):
+                            curr_parent = new_n
+                            foundNextNode = True
 
-                if pointEncompassed(current_vertex, goal_vertex):
+                if pointEncompassed(current_rand_node, goal_vertex):
                     print(' - - - GOAL FOUND - - - ')
                     # Sets the value to True
                     goal_reached = 1
