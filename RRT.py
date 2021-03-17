@@ -12,8 +12,19 @@ import math
 
 
 class RRT:
-
+    """
+    RRT Class
+    """
     def __init__(self, graph, start_node, goal_node):
+        """
+        RRT init function
+        :param graph: The graph which contains all the nodes
+        :type graph: Graph Type
+        :param      start_node:  The starting vertex
+        :type       start_node:  Node type
+        :param      goal_node:   The goal vertex
+        :type       goal_node:   Node type
+        """
         self.graph = graph
         self.start_node = start_node
         self.goal_node = goal_node
