@@ -40,7 +40,7 @@ Search Algorithms implemented so far :
  - A * Search Algorithm
 
 <p align="center">
-  <img height="250" src="A_Star_Video_Images/00050.jpg">
+  <img height="250" src="A_Star_Video_Images/000050.jpg">
 </p>
 
 - RRT Search Algorithm
