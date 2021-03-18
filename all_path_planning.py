@@ -4,11 +4,11 @@ from Dijkstra import doDijkstra
 from BFS import doBFS
 from DFS import doDFS
 from RRT import doRRT
+from RRT_Star import doRRT_Star
 
 # Call tkinter Window and display all options
 
 if __name__ == "__main__":
-
     # create a tkinter window
 
     root = Tk()
@@ -45,6 +45,12 @@ if __name__ == "__main__":
 
     btn_RRT = Button(root, text='Solve by RRT Path Planning', bd='10',
                      command=doRRT)
+
+    # RRT * Path Planning Button
+
+    btn_RRT_Star = Button(root, text='Solve by RRT Path Planning', bd='10',
+                          command=doRRT_Star)
+
     # Exit Button
 
     exit_button = Button(root, text='Exit!', bd='10',
@@ -57,6 +63,7 @@ if __name__ == "__main__":
     btn_a_star.pack(side='top')
     btn_dijkstra.pack(side='top')
     btn_RRT.pack(side='top')
+    btn_RRT_Star.pack(side='top')
 
     # Exit Button to be placed differently
 
