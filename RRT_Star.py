@@ -115,25 +115,6 @@ class RRTStar:
             Add RRT Star code here
             '''
 
-            cv2.imshow("Searching map", map_canvas)
-
-            # To save the video
-            len_number = len(str(self.video_count))
-            number_name = "0" * (6 - len_number)
-            # cv2.imwrite('RRT_Video_Images/' + number_name + str(self.video_count) + '.jpg', map_canvas)
-            self.video_count += 1
-
-            if cv2.waitKey(20) & 0xFF == ord('q'):
-                break
-            if pointEncompassed(new_point_1, goal_vertex) \
-                    or pointEncompassed(new_point_2, goal_vertex) \
-                    or pointEncompassed(new_point_3, goal_vertex) \
-                    or pointEncompassed(new_point_4, goal_vertex):
-                print(' - - - GOAL FOUND - - - ')
-                self.goal_reached = True
-                print('Video Generating ....')
-                break
-
 
 def doRRT_Star():
     """
