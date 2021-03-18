@@ -124,29 +124,11 @@ class RRTStar:
             new_point_3 = self.getPointWithinThreshold(closest_node_to_random_point_3, random_generated_node_3)
             new_point_4 = self.getPointWithinThreshold(closest_node_to_random_point_4, random_generated_node_4)
 
-            self.vertices.add(new_point_1)
-            self.vertices.add(new_point_2)
-            self.vertices.add(new_point_3)
-            self.vertices.add(new_point_4)
 
-            if checkInObstacle(new_point_1, map_canvas) == False \
-                    and checkInObstacle(new_point_2,map_canvas) == False \
-                    and checkInObstacle(new_point_3, map_canvas) == False\
-                    and checkInObstacle(new_point_4, map_canvas) == False:
-
-                self.setParent(closest_node_to_random_point_1, new_point_1)
-                self.setParent(closest_node_to_random_point_2, new_point_2)
-                self.setParent(closest_node_to_random_point_3, new_point_3)
-                self.setParent(closest_node_to_random_point_4, new_point_4)
-
-            cv2.line(map_canvas, (closest_node_to_random_point_1.x, closest_node_to_random_point_1.y),
-                     (new_point_1.x, new_point_1.y), path_colour, 1, cv2.LINE_AA)
-            cv2.line(map_canvas, (closest_node_to_random_point_2.x, closest_node_to_random_point_2.y),
-                     (new_point_2.x, new_point_2.y), path_colour, 1, cv2.LINE_AA)
-            cv2.line(map_canvas, (closest_node_to_random_point_3.x, closest_node_to_random_point_3.y),
-                     (new_point_3.x, new_point_3.y), path_colour, 1, cv2.LINE_AA)
-            cv2.line(map_canvas, (closest_node_to_random_point_4.x, closest_node_to_random_point_4.y),
-                     (new_point_4.x, new_point_4.y), path_colour, 1, cv2.LINE_AA)
+            '''
+            
+            RRT Star code to be filled in here
+            '''
 
             cv2.imshow("Searching map", map_canvas)
 
