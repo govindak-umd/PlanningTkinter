@@ -78,15 +78,25 @@ def doRRT_Star():
     RRT * Function to be executed when
     Tkinter Button is clicked
     """
-    pass
+    node_start = mouse_start_node
+    node_goal = mouse_goal_node
+    time_s_tk = time.time()
+    rrt_star_tk = RRTStar(graph_generated, node_start, node_goal)
+    rrt_star_tk.SolveRRTStar(node_start, node_goal)
+    print('Total Time for execution : ', time.time() - time_s_tk, ' seconds')
+    image_folder_name = "RRT_Video_Images"
+    file = "RRT_Video"
+    GenerateVideo(image_folder_name, file, video_folder="Videos")
 
 
 if __name__ == "__main__":
     clicked_start = mouse_start_node
     clicked_goal = mouse_goal_node
     time_s = time.time()
-    rrt_star = RRTStar(graph_generated, clicked_start, clicked_goal)
-    rrt_star.SolveRRT(clicked_start, clicked_goal)
-    print('Total Time for execution : ', time.time() - time_s, ' seconds')
-    image_folder = "RRT_Star_Video_Images"
-    file_name = "RRT_Star_Video"
+    # rrt_star = RRTStar(graph_generated, clicked_start, clicked_goal)
+    # rrt_star.SolveRRTStar(clicked_start, clicked_goal)
+    # print('Total Time for execution : ', time.time() - time_s, ' seconds')
+    # image_folder = "RRT_Star_Video_Images"
+    # file_name = "RRT_Star_Video"
+    # GenerateVideo(image_folder, file_name, video_folder="Videos")
+
