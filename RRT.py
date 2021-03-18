@@ -121,7 +121,8 @@ class RRT:
 
             self.vertices.add(new_point)
 
-            self.setParent(closest_node_to_random_point, new_point)
+            if not checkInObstacle(new_point, map_canvas):
+                self.setParent(closest_node_to_random_point, new_point)
 
             cv2.line(map_canvas, (closest_node_to_random_point.x, closest_node_to_random_point.y),
                      (new_point.x, new_point.y), path_colour, 1, cv2.LINE_AA)
