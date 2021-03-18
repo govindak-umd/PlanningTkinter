@@ -2,8 +2,8 @@
 
 ## Author
 
-Govind Ajith Kumar
-[My Portfolio]()
+- Govind Ajith Kumar
+- [My Portfolio](https://govindajithkumar.com/)
 
 ## System Settings
 
