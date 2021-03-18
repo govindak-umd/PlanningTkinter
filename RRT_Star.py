@@ -35,6 +35,7 @@ class RRTStar:
         self.threshold = 5
         self.video_count = 0
         self.parent_dic = {}
+        self.cost_dic = {}
 
     def findClosestPointInTree(self, node):
         """
@@ -106,28 +107,12 @@ class RRTStar:
         self.vertices.add(starting_vertex)
 
         for i in range(self.iterations):
-            random_generated_node_1 = generateRandomPoint(map_size, map_canvas)
-            random_generated_node_2 = generateRandomPoint(map_size, map_canvas)
-            random_generated_node_3 = generateRandomPoint(map_size, map_canvas)
-            random_generated_node_4 = generateRandomPoint(map_size, map_canvas)
-
-            closest_node_to_random_point_1 = self.findClosestPointInTree(random_generated_node_1)
-            closest_node_to_random_point_2 = self.findClosestPointInTree(random_generated_node_2)
-            closest_node_to_random_point_3 = self.findClosestPointInTree(random_generated_node_3)
-            closest_node_to_random_point_4 = self.findClosestPointInTree(random_generated_node_4)
-
-            # Ideally add a code here to make sure that the
-            # straight path between the two points won't collide
-
-            new_point_1 = self.getPointWithinThreshold(closest_node_to_random_point_1, random_generated_node_1)
-            new_point_2 = self.getPointWithinThreshold(closest_node_to_random_point_2, random_generated_node_2)
-            new_point_3 = self.getPointWithinThreshold(closest_node_to_random_point_3, random_generated_node_3)
-            new_point_4 = self.getPointWithinThreshold(closest_node_to_random_point_4, random_generated_node_4)
-
+            random_generated_node = generateRandomPoint(map_size, map_canvas)
+            if checkInObstacle(random_generated_node, map_canvas):
+                continue
 
             '''
-            
-            RRT Star code to be filled in here
+            Add RRT Star code here
             '''
 
             cv2.imshow("Searching map", map_canvas)
