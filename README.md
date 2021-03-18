@@ -39,6 +39,8 @@ Search Algorithms implemented so far :
 
 - RRT * Search Algorithm
 
+*I will add the image soon*
+
 ## How to run the program
 
 Make sure all the installations are complete. These include:
@@ -69,8 +71,7 @@ Once done, you can execute the programs in two different ways:
 - Wait for the execution 
 - Hit *Exit* when done.
 
-In this case the menu looks like this:
-
+In this case the menu looks like this. The menu will be updated as and when more algorithms are added.
 <p align="center">
   <img height="400" src="Images/tkinter_menu.PNG">
 </p>
