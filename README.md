@@ -36,6 +36,10 @@ Search Algorithms implemented so far :
 <p align="center">
   <img height="250" src="RRT_Video_Images/000300.jpg">
 </p>
+
+- RRT * Search Algorithm
+
+
 ## How to run the program
 
 Make sure all the installations are complete. These include:
