@@ -68,7 +68,9 @@ def DistanceBetween(start_node, goal_node):
 
 def checkInObstacle(node_check, map_img):
     """
-    Check if a point is in the obstacle map
+    Check if a point is in the obstacle map.
+
+    Returns true if it IS in the obstalce
     :param node_check: node to check
     :type node_check: Node
     :param map_img: Image of the map

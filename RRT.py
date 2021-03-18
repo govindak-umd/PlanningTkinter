@@ -1,6 +1,6 @@
 import cv2
 from map import map_canvas, mouse_start_node, mouse_goal_node
-from graph import graph_generated, printNode
+from graph import graph_generated, printNode, compareNodes, getSameNode
 from maps_utils import checkInObstacle, DistanceBetween, \
     map_size, Node, pointEncompassed, path_colour
 from utils import GenerateVideo, generateRandomPoint
@@ -8,6 +8,27 @@ import time
 import random
 import math
 
+
+class Tree:
+
+    def __init__(self):
+        self.tree = {}
+
+    def setChild(self, parent_name, child_name):
+        parent_name = getSameNode(parent_name)
+        child_name = getSameNode(child_name)
+        self.tree[parent_name] = child_name
+
+    def setParent(self, parent_name, child_name):
+        parent_name = getSameNode(parent_name)
+        child_name = getSameNode(child_name)
+        for (k, v) in self.tree.items():
+            if compareNodes(child_name, k):
+                del self.tree[k]
+        self.tree[parent_name] = child_name
+
+    def getTreeLength(self):
+        return len(self.tree)
 
 
 class RRT:
@@ -48,14 +69,12 @@ class RRT:
         """
         min_dist = float('inf')
         print('Point to check in vertices of length > ', len(self.vertices))
-        printNode(node)
         for vertex in self.vertices:
             calc_distance = DistanceBetween(vertex, node)
             if calc_distance < min_dist:
                 min_dist = calc_distance
                 closest_tree_node = vertex
         print('Closest Point : ')
-        printNode(closest_tree_node)
         return closest_tree_node
 
     def checkPathCollision(self, node_from, node_to):
@@ -111,9 +130,16 @@ class RRT:
         """
         self.vertices.add(starting_vertex)
 
+        count = 0
         for i in range(self.iterations):
             random_generated_node = generateRandomPoint(map_size, map_canvas)
+            print('Random Generated Node .. ')
+            printNode(random_generated_node)
             closest_node_to_random_point = self.findClosestPointInTree(random_generated_node)
+            print('The closest Detected Node  .. ')
+            printNode(closest_node_to_random_point)
+            d = DistanceBetween(random_generated_node, closest_node_to_random_point)
+            print('Distance between the two nodes is : ', d)
             new_point = self.getPointWithinThreshold(closest_node_to_random_point, random_generated_node)
 
             # Ideally add a code here to make sure that the
@@ -121,8 +147,10 @@ class RRT:
 
             self.vertices.add(new_point)
 
-            if not checkInObstacle(new_point, map_canvas):
-                self.setParent(closest_node_to_random_point, new_point)
+            if checkInObstacle(new_point, map_canvas):
+                continue
+
+            self.setParent(closest_node_to_random_point, new_point)
 
             cv2.line(map_canvas, (closest_node_to_random_point.x, closest_node_to_random_point.y),
                      (new_point.x, new_point.y), path_colour, 1, cv2.LINE_AA)
@@ -132,15 +160,20 @@ class RRT:
             # To save the video
             len_number = len(str(self.video_count))
             number_name = "0" * (6 - len_number)
-            cv2.imwrite('RRT_Video_Images/' + number_name + str(self.video_count) + '.jpg', map_canvas)
+            # cv2.imwrite('RRT_Video_Images/' + number_name + str(self.video_count) + '.jpg', map_canvas)
             self.video_count += 1
 
             if cv2.waitKey(20) & 0xFF == ord('q'):
                 break
             if pointEncompassed(new_point, goal_vertex):
+                print('Total elem in the dictionary = ', len(self.parent_dic))
                 print(' - - - GOAL FOUND - - - ')
                 self.goal_reached = True
                 print('Video Generating ....')
+                break
+
+            if i == self.iterations - 1:
+                print('Sorry, Node not found. Try Tuning the parameters')
                 break
 
 
@@ -169,4 +202,4 @@ if __name__ == "__main__":
     print('Total Time for execution : ', time.time() - time_s, ' seconds')
     image_folder = "RRT_Video_Images"
     file_name = "RRT_Video"
-    GenerateVideo(image_folder, file_name, video_folder="Videos")
+    # GenerateVideo(image_folder, file_name, video_folder="Videos")
