@@ -63,6 +63,19 @@ class RRT:
 
             return new_point
 
+    def traceBack(self, tree_dic):
+        """
+        Function to get the traceback path
+        :param tree_dic: Tree Dictionary
+        :type tree_dic: Dictionary
+        """
+        for parent, child in tree_dic.items():
+            print('Drawing Line between :')
+            printNode(parent)
+            printNode(child)
+            cv2.line(map_canvas, (parent.x, parent.y),
+                     (child.x, child.y), [0,255,0], 1, cv2.LINE_AA)
+
     def SolveRRT(self, starting_vertex, goal_vertex):
         """
         Solve the graph from start to end through
@@ -77,11 +90,10 @@ class RRT:
         # Initialize an empty tree
 
         rrt_tree = Tree()
-        rrt_tree.setStart(starting_vertex,starting_vertex)
+        rrt_tree.setStart(starting_vertex, starting_vertex)
 
         for i in range(self.iterations):
 
-            print(rrt_tree.tree)
             random_generated_node = generateRandomPoint(map_size, map_canvas)
             closest_node_to_random_point = rrt_tree.getNearestNode(random_generated_node)
             new_point = self.getPointWithinThreshold(closest_node_to_random_point, random_generated_node)
@@ -95,6 +107,8 @@ class RRT:
                      (new_point.x, new_point.y), path_colour, 1, cv2.LINE_AA)
 
             cv2.imshow("Searching map", map_canvas)
+            if cv2.waitKey(20) & 0xFF == ord('q'):
+                break
 
             # To save the video
             len_number = len(str(self.video_count))
@@ -102,12 +116,11 @@ class RRT:
             cv2.imwrite('RRT_Video_Images/' + number_name + str(self.video_count) + '.jpg', map_canvas)
             self.video_count += 1
 
-            if cv2.waitKey(20) & 0xFF == ord('q'):
-                break
             if pointEncompassed(new_point, goal_vertex):
                 print('Total length of tree : ', rrt_tree.getTreeLength())
                 print(' - - - GOAL FOUND - - - ')
                 self.goal_reached = True
+                self.traceBack(rrt_tree.tree)
                 print('Video Generating ....')
                 break
 
