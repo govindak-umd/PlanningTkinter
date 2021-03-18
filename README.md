@@ -46,7 +46,7 @@ Search Algorithms implemented so far :
 - RRT Search Algorithm
 
 <p align="center">
-  <img height="250" src="RRT_Video_Images/000300.jpg">
+  <img height="250" src="RRT_Video_Images/000159.jpg">
 </p>
 
 - RRT * Search Algorithm
