@@ -7,49 +7,7 @@ from utils import GenerateVideo, generateRandomPoint
 import time
 import random
 import math
-
-
-class Tree:
-
-    def __init__(self):
-        self.tree = {}
-
-    def setChild(self, parent_name, child_name):
-        parent_name = getSameNode(parent_name)
-        child_name = getSameNode(child_name)
-        self.tree[parent_name] = child_name
-
-    def setStart(self, parent_name, child_name):
-        self.tree[parent_name] = child_name
-
-    def setParent(self, parent_name, child_name):
-        # parent_name = getSameNode(parent_name, graph_generated)
-        # child_name = getSameNode(child_name, starting_vertex)
-        for (k, v) in self.tree.items():
-            if compareNodes(child_name, k):
-                del self.tree[k]
-                self.tree[parent_name] = child_name
-                break
-
-
-    def getTreeLength(self):
-        return len(self.tree)
-
-    def getNearestNode(self, node_to_check):
-        """
-        Amongst all the child nodes in the tree,
-        return the node closest to the node_to_check
-        :return: closest_tree_node
-        :rtype: Node
-        """
-        min_dist = float('inf')
-        for parent, child in self.tree.items():
-            print('hey')
-            calc_distance = DistanceBetween(child, node_to_check)
-            if calc_distance < min_dist:
-                min_dist = calc_distance
-                closest_tree_node = child
-        return closest_tree_node
+from data_structures import Tree
 
 
 class RRT:
@@ -73,29 +31,9 @@ class RRT:
         self.vertices = set()
         self.path = []
         self.goal_reached = False
-        self.count = 0
         self.iterations = 2000
-        self.threshold = 50
+        self.threshold = 7
         self.video_count = 0
-
-    def findClosestPointInTree(self, node):
-        """
-        Find the closest point the the node
-        in the vertices tree
-        :param node: Node to check
-        :type node: Node
-        :return: The closest node in the tree
-        :rtype: Node
-        """
-        min_dist = float('inf')
-        print('Point to check in vertices of length > ', len(self.vertices))
-        for vertex in self.vertices:
-            calc_distance = DistanceBetween(vertex, node)
-            if calc_distance < min_dist:
-                min_dist = calc_distance
-                closest_tree_node = vertex
-        print('Closest Point : ')
-        return closest_tree_node
 
     def checkPathCollision(self, node_from, node_to):
         # check if the path between node_from and
@@ -143,6 +81,7 @@ class RRT:
         rrt_tree.setStart(starting_vertex,starting_vertex)
 
         for i in range(self.iterations):
+
             print(rrt_tree.tree)
             random_generated_node = generateRandomPoint(map_size, map_canvas)
             closest_node_to_random_point = rrt_tree.getNearestNode(random_generated_node)
@@ -161,7 +100,7 @@ class RRT:
             # To save the video
             len_number = len(str(self.video_count))
             number_name = "0" * (6 - len_number)
-            # cv2.imwrite('RRT_Video_Images/' + number_name + str(self.video_count) + '.jpg', map_canvas)
+            cv2.imwrite('RRT_Video_Images/' + number_name + str(self.video_count) + '.jpg', map_canvas)
             self.video_count += 1
 
             if cv2.waitKey(20) & 0xFF == ord('q'):
@@ -203,4 +142,4 @@ if __name__ == "__main__":
     print('Total Time for execution : ', time.time() - time_s, ' seconds')
     image_folder = "RRT_Video_Images"
     file_name = "RRT_Video"
-    # GenerateVideo(image_folder, file_name, video_folder="Videos")
+    GenerateVideo(image_folder, file_name, video_folder="Videos")

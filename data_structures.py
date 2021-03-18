@@ -1,4 +1,5 @@
-from graph import compareNodes
+from graph import compareNodes, getSameNode
+from maps_utils import DistanceBetween
 
 
 # Priority Queue Class
@@ -45,7 +46,7 @@ class PriorityQueue:
         # print('Length of queue : >> ', len(self.queue))
         return len(self.queue)
 
-    def checkinPQ(self,node_to_check):
+    def checkinPQ(self, node_to_check):
         """
         Checks for a node in the Priority Queue
         :param node_to_check: The node to check
@@ -54,6 +55,76 @@ class PriorityQueue:
         :rtype: boolean
         """
         for all_tuples in self.queue:
-            if compareNodes(all_tuples[1],node_to_check):
+            if compareNodes(all_tuples[1], node_to_check):
                 return True
         return False
+
+
+class Tree:
+    """
+    Tree data setructure. Used for RRT, RRT*
+    """
+
+    def __init__(self):
+        self.tree = {}
+
+    def setChild(self, parent_name, child_name):
+        """
+        Sets the child of a parent in the tree
+        :param parent_name: Parent
+        :type parent_name: Node
+        :param child_name: Child
+        :type child_name: Node
+        :return: None
+        :rtype: None
+        """
+        parent_name = getSameNode(parent_name)
+        child_name = getSameNode(child_name)
+        self.tree[parent_name] = child_name
+
+    def setStart(self, parent_name, child_name):
+        """
+        Sets the start in the treee
+        :param parent_name: Parent Node
+        :type parent_name: Node
+        :param child_name: Child Node
+        :type child_name: Node
+        :return: None
+        :rtype: None
+        """
+        self.tree[parent_name] = child_name
+
+    def setParent(self, parent_name, child_name):
+        """
+        Sets the parent
+        :param parent_name: Parent
+        :type parent_name: Node
+        :param child_name: Child
+        :type child_name: Node
+        :return: None
+        :rtype: None
+        """
+        self.tree[parent_name] = child_name
+
+    def getTreeLength(self):
+        """
+        Returns the length of the tree
+        :return: Length of the tree
+        :rtype: Integer
+        """
+        return len(self.tree)
+
+    def getNearestNode(self, node_to_check):
+        """
+        Amongst all the child nodes in the tree,
+        return the node closest to the node_to_check
+        :return: closest_tree_node
+        :rtype: Node
+        """
+        min_dist = float('inf')
+        for parent, child in self.tree.items():
+            calc_distance = DistanceBetween(child, node_to_check)
+            if calc_distance < min_dist:
+                min_dist = calc_distance
+                closest_tree_node = child
+        return closest_tree_node
