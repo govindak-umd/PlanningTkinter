@@ -5,13 +5,13 @@ from maps_utils import checkInObstacle, DistanceBetween, \
     map_size, Node, pointEncompassed, path_colour
 from utils import GenerateVideo, generateRandomPoint
 import time
-import random
 import math
+from data_structures import Tree
 
 
 class RRTStar:
     """
-    RRT Star Class
+    RRT * Class
     """
 
     def __init__(self, graph, start_node, goal_node):
@@ -30,33 +30,14 @@ class RRTStar:
         self.vertices = set()
         self.path = []
         self.goal_reached = False
-        self.count = 0
-        self.iterations = 4000
-        self.threshold = 5
+        self.iterations = 2000
+        self.threshold = 7
         self.video_count = 0
-        self.parent_dic = {}
-        self.cost_dic = {}
 
-    def findClosestPointInTree(self, node):
-        """
-        Find the closest point the the node
-        in the vertices tree
-        :param node: Node to check
-        :type node: Node
-        :return: The closest node in the tree
-        :rtype: Node
-        """
-        min_dist = float('inf')
-        print('Point to check in vertices of length > ', len(self.vertices))
-        printNode(node)
-        for vertex in self.vertices:
-            calc_distance = DistanceBetween(vertex, node)
-            if calc_distance < min_dist:
-                min_dist = calc_distance
-                closest_tree_node = vertex
-        print('Closest Point : ')
-        printNode(closest_tree_node)
-        return closest_tree_node
+    def checkPathCollision(self, node_from, node_to):
+        # check if the path between node_from and
+        # node_end is collision free
+        pass
 
     def getPointWithinThreshold(self, node_from, node_to):
         """
@@ -73,7 +54,6 @@ class RRTStar:
 
             return node_to
         else:
-            print('Point too far ... ')
             from_x, from_y = node_from.x, node_from.y
             to_x, to_y = node_to.x, node_to.y
             theta = math.atan2(to_y - from_y, to_x - from_x)
@@ -83,22 +63,10 @@ class RRTStar:
 
             return new_point
 
-    def setParent(self, parent_point, child_point):
-        """
-        Set the parent of the node in the dictionary
-        :param parent_point: Parent Node
-        :type parent_point: Node
-        :param child_point: Child Node
-        :type child_point: Node
-        :return: Node
-        :rtype: Node
-        """
-        self.parent_dic[child_point] = parent_point
-
     def SolveRRTStar(self, starting_vertex, goal_vertex):
         """
         Solve the graph from start to end through
-        Rapidly Exploring Random Trees * (RRT * )
+        Rapidly Exploring Random Trees * (RRT*)
         :param starting_vertex: Starting Node
         :type starting_vertex: Node
         :param goal_vertex: Goal Node
@@ -106,14 +74,46 @@ class RRTStar:
         """
         self.vertices.add(starting_vertex)
 
+        # Initialize an empty tree
+
+        rrt_tree = Tree()
+        rrt_tree.setStart(starting_vertex, starting_vertex)
+
         for i in range(self.iterations):
+
+            print(rrt_tree.tree)
             random_generated_node = generateRandomPoint(map_size, map_canvas)
-            if checkInObstacle(random_generated_node, map_canvas):
+            closest_node_to_random_point = rrt_tree.getNearestNode(random_generated_node)
+            new_point = self.getPointWithinThreshold(closest_node_to_random_point, random_generated_node)
+
+            if checkInObstacle(new_point, map_canvas):
                 continue
 
-            '''
-            Add RRT Star code here
-            '''
+            rrt_tree.setParent(closest_node_to_random_point, new_point)
+
+            cv2.line(map_canvas, (closest_node_to_random_point.x, closest_node_to_random_point.y),
+                     (new_point.x, new_point.y), path_colour, 1, cv2.LINE_AA)
+
+            cv2.imshow("Searching map", map_canvas)
+
+            # To save the video
+            len_number = len(str(self.video_count))
+            number_name = "0" * (6 - len_number)
+            cv2.imwrite('RRT_Video_Images/' + number_name + str(self.video_count) + '.jpg', map_canvas)
+            self.video_count += 1
+
+            if cv2.waitKey(20) & 0xFF == ord('q'):
+                break
+            if pointEncompassed(new_point, goal_vertex):
+                print('Total length of tree : ', rrt_tree.getTreeLength())
+                print(' - - - GOAL FOUND - - - ')
+                self.goal_reached = True
+                print('Video Generating ....')
+                break
+
+            if i == self.iterations - 1:
+                print('Sorry, Node not found. Try Tuning the parameters')
+                break
 
 
 def doRRT_Star():

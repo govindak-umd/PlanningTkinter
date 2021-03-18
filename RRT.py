@@ -5,7 +5,6 @@ from maps_utils import checkInObstacle, DistanceBetween, \
     map_size, Node, pointEncompassed, path_colour
 from utils import GenerateVideo, generateRandomPoint
 import time
-import random
 import math
 from data_structures import Tree
 
