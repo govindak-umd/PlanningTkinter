@@ -19,16 +19,37 @@ class Tree:
         child_name = getSameNode(child_name)
         self.tree[parent_name] = child_name
 
+    def setStart(self, parent_name, child_name):
+        self.tree[parent_name] = child_name
+
     def setParent(self, parent_name, child_name):
-        parent_name = getSameNode(parent_name)
-        child_name = getSameNode(child_name)
+        # parent_name = getSameNode(parent_name, graph_generated)
+        # child_name = getSameNode(child_name, starting_vertex)
         for (k, v) in self.tree.items():
             if compareNodes(child_name, k):
                 del self.tree[k]
-        self.tree[parent_name] = child_name
+                self.tree[parent_name] = child_name
+                break
+
 
     def getTreeLength(self):
         return len(self.tree)
+
+    def getNearestNode(self, node_to_check):
+        """
+        Amongst all the child nodes in the tree,
+        return the node closest to the node_to_check
+        :return: closest_tree_node
+        :rtype: Node
+        """
+        min_dist = float('inf')
+        for parent, child in self.tree.items():
+            print('hey')
+            calc_distance = DistanceBetween(child, node_to_check)
+            if calc_distance < min_dist:
+                min_dist = calc_distance
+                closest_tree_node = child
+        return closest_tree_node
 
 
 class RRT:
@@ -54,9 +75,8 @@ class RRT:
         self.goal_reached = False
         self.count = 0
         self.iterations = 2000
-        self.threshold = 5
+        self.threshold = 50
         self.video_count = 0
-        self.parent_dic = {}
 
     def findClosestPointInTree(self, node):
         """
@@ -97,7 +117,6 @@ class RRT:
 
             return node_to
         else:
-            print('Point too far ... ')
             from_x, from_y = node_from.x, node_from.y
             to_x, to_y = node_to.x, node_to.y
             theta = math.atan2(to_y - from_y, to_x - from_x)
@@ -106,18 +125,6 @@ class RRT:
             new_point = Node(node_x, node_y)
 
             return new_point
-
-    def setParent(self, parent_point, child_point):
-        """
-        Set the parent of the node in the dictionary
-        :param parent_point: Parent Node
-        :type parent_point: Node
-        :param child_point: Child Node
-        :type child_point: Node
-        :return: Node
-        :rtype: Node
-        """
-        self.parent_dic[child_point] = parent_point
 
     def SolveRRT(self, starting_vertex, goal_vertex):
         """
@@ -130,27 +137,21 @@ class RRT:
         """
         self.vertices.add(starting_vertex)
 
-        count = 0
+        # Initialize an empty tree
+
+        rrt_tree = Tree()
+        rrt_tree.setStart(starting_vertex,starting_vertex)
+
         for i in range(self.iterations):
+            print(rrt_tree.tree)
             random_generated_node = generateRandomPoint(map_size, map_canvas)
-            print('Random Generated Node .. ')
-            printNode(random_generated_node)
-            closest_node_to_random_point = self.findClosestPointInTree(random_generated_node)
-            print('The closest Detected Node  .. ')
-            printNode(closest_node_to_random_point)
-            d = DistanceBetween(random_generated_node, closest_node_to_random_point)
-            print('Distance between the two nodes is : ', d)
+            closest_node_to_random_point = rrt_tree.getNearestNode(random_generated_node)
             new_point = self.getPointWithinThreshold(closest_node_to_random_point, random_generated_node)
-
-            # Ideally add a code here to make sure that the
-            # straight path between the two points won't collide
-
-            self.vertices.add(new_point)
 
             if checkInObstacle(new_point, map_canvas):
                 continue
 
-            self.setParent(closest_node_to_random_point, new_point)
+            rrt_tree.setParent(closest_node_to_random_point, new_point)
 
             cv2.line(map_canvas, (closest_node_to_random_point.x, closest_node_to_random_point.y),
                      (new_point.x, new_point.y), path_colour, 1, cv2.LINE_AA)
@@ -166,7 +167,7 @@ class RRT:
             if cv2.waitKey(20) & 0xFF == ord('q'):
                 break
             if pointEncompassed(new_point, goal_vertex):
-                print('Total elem in the dictionary = ', len(self.parent_dic))
+                print('Total length of tree : ', rrt_tree.getTreeLength())
                 print(' - - - GOAL FOUND - - - ')
                 self.goal_reached = True
                 print('Video Generating ....')

@@ -2,6 +2,7 @@ import cv2
 import os
 import random
 from maps_utils import checkInObstacle, Node
+from graph import getSameNode
 
 # Degrees of freedom for the robot
 # A 2 d.o.f robot can move in +x -x +y -y
@@ -51,4 +52,5 @@ def generateRandomPoint(map_size, map_img):
         node_random = Node(x_rand, y_rand)
         if checkInObstacle(node_random, map_img):
             continue
+        # node_random = getSameNode(node_random)
         return node_random
