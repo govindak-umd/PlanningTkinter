@@ -1,5 +1,17 @@
 # Planning Algorithms Visualized through OpenCV and UI with tkinter
 
+## Author
+
+Govind Ajith Kumar
+[My Portfolio]()
+
+## System Settings
+
+Windows 10
+Razer Blade 15
+
+## Project Description
+
 View planning on Trello board [here](https://trello.com/b/A9lTAano/planningtkinter).
 
 This is a pet project that will help you visualize the 
