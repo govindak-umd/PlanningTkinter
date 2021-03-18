@@ -1,11 +1,13 @@
 import cv2
 from map import map_canvas, mouse_start_node, mouse_goal_node
 from graph import graph_generated, printNode
-from maps_utils import DistanceBetween, map_size, Node, pointEncompassed, path_colour
-from utils import GenerateVideo
+from maps_utils import checkInObstacle, DistanceBetween, \
+    map_size, Node, pointEncompassed, path_colour
+from utils import GenerateVideo, generateRandomPoint
 import time
 import random
 import math
+
 
 
 class RRT:
@@ -34,34 +36,6 @@ class RRT:
         self.threshold = 5
         self.video_count = 0
         self.parent_dic = {}
-
-    # Check if a point is in an obstacle
-    def checkInObstalce(self, node_check):
-        """
-        Check if a point is in the obstacle
-        :param node_check: node to check
-        :type node_check: Node
-        :return: True or False
-        :rtype: Boolean
-        """
-        if map_canvas[node_check.x, node_check.y][0] == 0:
-            return True
-        return False
-
-    # Generate a random node for adding to tree for traversal
-    def RRT_generateRandomPoint(self):
-        """
-        Generate a random node
-        :return: a random node
-        :rtype: Node
-        """
-        while True:
-            x_rand = int(random.random() * map_size)
-            y_rand = int(random.random() * map_size)
-            node_random = Node(x_rand, y_rand)
-            if self.checkInObstalce(node_random):
-                continue
-            return node_random
 
     def findClosestPointInTree(self, node):
         """
@@ -138,7 +112,7 @@ class RRT:
         self.vertices.add(starting_vertex)
 
         for i in range(self.iterations):
-            random_generated_node = self.RRT_generateRandomPoint()
+            random_generated_node = generateRandomPoint(map_size, map_canvas)
             closest_node_to_random_point = self.findClosestPointInTree(random_generated_node)
             new_point = self.getPointWithinThreshold(closest_node_to_random_point, random_generated_node)
 

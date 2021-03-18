@@ -65,3 +65,17 @@ def DistanceBetween(start_node, goal_node):
 
     return euc_distance
 
+
+def checkInObstacle(node_check, map_img):
+    """
+    Check if a point is in the obstacle map
+    :param node_check: node to check
+    :type node_check: Node
+    :param map_img: Image of the map
+    :type map_img: Numpy array of 3 by 3 dimension
+    :return: True or False
+    :rtype: Boolean
+    """
+    if map_img[node_check.x, node_check.y][0] == 0:
+        return True
+    return False

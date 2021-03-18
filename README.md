@@ -39,7 +39,6 @@ Search Algorithms implemented so far :
 
 - RRT * Search Algorithm
 
-
 ## How to run the program
 
 Make sure all the installations are complete. These include:

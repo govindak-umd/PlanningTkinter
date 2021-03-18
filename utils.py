@@ -1,11 +1,14 @@
 import cv2
 import os
+import random
+from maps_utils import checkInObstacle, Node
 
 # Degrees of freedom for the robot
 # A 2 d.o.f robot can move in +x -x +y -y
 # This can be developed further by getting a formula
 # for finding a relation between the d.o.f and the directions,
 # as well as between the d.o.f and the cost it takes for a path
+
 dof_robot = 2
 
 
@@ -34,3 +37,18 @@ def GenerateVideo(image_folder, file_name, video_folder="Videos"):
 
     cv2.destroyAllWindows()
     video.release()
+
+
+def generateRandomPoint(map_size, map_img):
+    """
+    Generate a random node
+    :return: a random node
+    :rtype: Node
+    """
+    while True:
+        x_rand = int(random.random() * map_size)
+        y_rand = int(random.random() * map_size)
+        node_random = Node(x_rand, y_rand)
+        if checkInObstacle(node_random, map_img):
+            continue
+        return node_random
