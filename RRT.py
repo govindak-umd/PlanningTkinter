@@ -1,6 +1,6 @@
 import cv2
 from map import map_canvas, mouse_start_node, mouse_goal_node
-from graph import graph_generated, printNode, compareNodes, getSameNode
+from graph import checkinThis, graph_generated, printNode, compareNodes, getSameNode
 from maps_utils import checkInObstacle, DistanceBetween, \
     map_size, Node, pointEncompassed, path_colour
 from utils import GenerateVideo, generateRandomPoint
@@ -63,18 +63,14 @@ class RRT:
 
             return new_point
 
-    def traceBack(self, tree_dic):
+    def BackTracking(self, tree_dic):
         """
-        Function to get the traceback path
+        Function to get the BackTracking path
         :param tree_dic: Tree Dictionary
         :type tree_dic: Dictionary
         """
-        for parent, child in tree_dic.items():
-            print('Drawing Line between :')
-            printNode(parent)
-            printNode(child)
-            cv2.line(map_canvas, (parent.x, parent.y),
-                     (child.x, child.y), [0,255,0], 1, cv2.LINE_AA)
+        print(tree_dic)
+        print('Length of the dictionary is : ', len(tree_dic))
 
     def SolveRRT(self, starting_vertex, goal_vertex):
         """
@@ -113,14 +109,14 @@ class RRT:
             # To save the video
             len_number = len(str(self.video_count))
             number_name = "0" * (6 - len_number)
-            cv2.imwrite('RRT_Video_Images/' + number_name + str(self.video_count) + '.jpg', map_canvas)
+            # cv2.imwrite('RRT_Video_Images/' + number_name + str(self.video_count) + '.jpg', map_canvas)
             self.video_count += 1
 
             if pointEncompassed(new_point, goal_vertex):
                 print('Total length of tree : ', rrt_tree.getTreeLength())
                 print(' - - - GOAL FOUND - - - ')
                 self.goal_reached = True
-                self.traceBack(rrt_tree.tree)
+                self.BackTracking(rrt_tree.tree)
                 print('Video Generating ....')
                 break
 
@@ -154,4 +150,4 @@ if __name__ == "__main__":
     print('Total Time for execution : ', time.time() - time_s, ' seconds')
     image_folder = "RRT_Video_Images"
     file_name = "RRT_Video"
-    GenerateVideo(image_folder, file_name, video_folder="Videos")
+    # GenerateVideo(image_folder, file_name, video_folder="Videos")
