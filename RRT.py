@@ -1,6 +1,6 @@
 import cv2
 from map import map_canvas, mouse_start_node, mouse_goal_node
-from graph import checkinThis, graph_generated, printNode, compareNodes, getSameNode
+from graph import graph_generated, printNode, compareNodes, getSameNode
 from maps_utils import checkInObstacle, DistanceBetween, \
     map_size, Node, pointEncompassed, path_colour
 from utils import GenerateVideo, generateRandomPoint

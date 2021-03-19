@@ -1,5 +1,6 @@
 from graph import compareNodes, getSameNode
 from maps_utils import DistanceBetween
+from graph import printNode
 
 
 # Priority Queue Class
@@ -121,10 +122,12 @@ class Tree:
         :return: closest_tree_node
         :rtype: Node
         """
+
         min_dist = float('inf')
         for parent, child in self.tree.items():
             calc_distance = DistanceBetween(child, node_to_check)
             if calc_distance < min_dist:
                 min_dist = calc_distance
                 closest_tree_node = child
+
         return closest_tree_node
