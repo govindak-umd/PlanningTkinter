@@ -109,7 +109,7 @@ class RRT:
             # To save the video
             len_number = len(str(self.video_count))
             number_name = "0" * (6 - len_number)
-            # cv2.imwrite('RRT_Video_Images/' + number_name + str(self.video_count) + '.jpg', map_canvas)
+            cv2.imwrite('RRT_Video_Images/' + number_name + str(self.video_count) + '.jpg', map_canvas)
             self.video_count += 1
 
             if pointEncompassed(new_point, goal_vertex):
@@ -150,4 +150,4 @@ if __name__ == "__main__":
     print('Total Time for execution : ', time.time() - time_s, ' seconds')
     image_folder = "RRT_Video_Images"
     file_name = "RRT_Video"
-    # GenerateVideo(image_folder, file_name, video_folder="Videos")
+    GenerateVideo(image_folder, file_name, video_folder="Videos")
