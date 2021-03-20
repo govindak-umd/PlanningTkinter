@@ -2,7 +2,7 @@
 
 ## Author
 
-- Govind Ajith Kumar
+- Govind Ajith Kumar - Masters in Robotics 
 - [My Portfolio](https://govindajithkumar.com/)
 
 ## System Settings
