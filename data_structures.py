@@ -1,4 +1,4 @@
-from graph import compareNodes, getSameNode
+from graph import compareNodes, getSameNode, checkinThis
 from maps_utils import DistanceBetween
 from graph import printNode
 

@@ -54,11 +54,12 @@ def LoadMap(canvas, border):
             obstacle_points.append(Node(col, row))
             canvas[col, row] = (0, 0, 0)
 
-    # Obstacle 1
-    for row in range(70, 90):
-        for col in range(150, 200):
-            obstacle_points.append(Node(col, row))
-            canvas[col, row] = (0, 0, 0)
+    # # Obstacle 1
+    # for row in range(70, 90):
+    #     for col in range(150, 200):
+    #         obstacle_points.append(Node(col, row))
+    #         canvas[col, row] = (0, 0, 0)
+
     return canvas
 
 
