@@ -63,22 +63,34 @@ class RRT:
 
             return new_point
 
-    def BackTracking(self, tree_dic, goal):
+    def BackTracking(self, path_dic, goal):
         """
         Function to get the BackTracking path
-        :param tree_dic: Tree Dictionary
-        :type tree_dic: Dictionary
+        :param goal: Goal Node
+        :type goal: Node
+        :param path_dic: Tree Dictionary
+        :type path_dic: Dictionary
         """
         curr_child = goal
         for _ in range(1000):
-            for k, v in tree_dic.items():
+            for k, v in path_dic.items():
                 if compareNodes(v, curr_child):
                     cv2.line(map_canvas, (curr_child.x, curr_child.y),
                              (k.x, k.y), [0, 0, 255], 1, cv2.LINE_AA)
                     curr_child = k
                     cv2.imwrite('Final_RRT.jpg', map_canvas)
 
-    def step_from_to(self, point_1, point_2):
+    def findClosestNode(self, point_1, point_2):
+        """
+        Fucntion to find the closest node that is
+        within the threshold
+        :param point_1: Point 1
+        :type point_1: Node
+        :param point_2: Point 2
+        :type point_2: Node
+        :return: Correct Node
+        :rtype: Node
+        """
         if DistanceBetween(point_1, point_2) < self.threshold:
             return point_2
         else:
@@ -88,6 +100,15 @@ class RRT:
             return close_node
 
     def SolveRRT(self, starting_vertex, goal_vertex):
+        """
+        Solves RRT
+        :param starting_vertex: Starting Node
+        :type starting_vertex: Node
+        :param goal_vertex: Goal Node
+        :type goal_vertex: Node
+        :return: None
+        :rtype: None
+        """
 
         nodes = [starting_vertex]
         graph_vertices = self.graph.getVertices()
@@ -104,7 +125,7 @@ class RRT:
                 if DistanceBetween(p, random_generated_node) < DistanceBetween(random_generated_node, nn):
                     nn = p
 
-            new_node = self.step_from_to(nn, random_generated_node)
+            new_node = self.findClosestNode(nn, random_generated_node)
             new_node = getSameNode(new_node, graph_vertices)
 
             path_dic[nn] = new_node
