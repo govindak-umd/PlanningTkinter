@@ -63,23 +63,6 @@ class RRT:
 
             return new_point
 
-    def BackTracking(self, path_dic, goal):
-        """
-        Function to get the BackTracking path
-        :param goal: Goal Node
-        :type goal: Node
-        :param path_dic: Tree Dictionary
-        :type path_dic: Dictionary
-        """
-        curr_child = goal
-        for _ in range(1000):
-            for k, v in path_dic.items():
-                if compareNodes(v, curr_child):
-                    cv2.line(map_canvas, (curr_child.x, curr_child.y),
-                             (k.x, k.y), [0, 0, 255], 1, cv2.LINE_AA)
-                    curr_child = k
-                    cv2.imwrite('Final_RRT.jpg', map_canvas)
-
     def findClosestNode(self, point_1, point_2):
         """
         Fucntion to find the closest node that is
@@ -139,7 +122,7 @@ class RRT:
             # To save the video
             len_number = len(str(self.video_count))
             number_name = "0" * (6 - len_number)
-            # cv2.imwrite('RRT_Video_Images/' + number_name + str(self.video_count) + '.jpg', map_canvas)
+            cv2.imwrite('RRT_Video_Images/' + number_name + str(self.video_count) + '.jpg', map_canvas)
             self.video_count += 1
 
             if cv2.waitKey(20) & 0xFF == ord('q'):
@@ -148,7 +131,6 @@ class RRT:
             if pointEncompassed(new_node, goal_vertex):
                 print(' - - - GOAL FOUND - - - ')
                 self.goal_reached = True
-                self.BackTracking(path_dic, new_node)
                 print('Video Generating ....')
                 break
 
@@ -182,4 +164,4 @@ if __name__ == "__main__":
     print('Total Time for execution : ', time.time() - time_s, ' seconds')
     image_folder = "RRT_Video_Images"
     file_name = "RRT_Video"
-    # GenerateVideo(image_folder, file_name, video_folder="Videos")
+    GenerateVideo(image_folder, file_name, video_folder="Videos")
