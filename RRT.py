@@ -63,17 +63,6 @@ class RRT:
 
             return new_point
 
-    def BackTracking(self, tree_dic, dummy_goal):
-        """
-        Function to get the BackTracking path
-        :param tree_dic: Tree Dictionary
-        :type tree_dic: Dictionary
-        """
-        for k, v in tree_dic.items():
-            cv2.line(map_canvas, (v.x, v.y),
-                     (k.x, k.y), [0, 0, 255], 1, cv2.LINE_AA)
-        cv2.imwrite('RRT_Video_Images/' + 'Backtracked_RRT.jpg', map_canvas)
-
     def SolveRRT(self, starting_vertex, goal_vertex):
         """
         Solve the graph from start to end through
@@ -121,7 +110,6 @@ class RRT:
                 printNode(new_point)
                 printNode(goal_vertex)
                 self.goal_reached = True
-                self.BackTracking(rrt_tree.tree, new_point)
                 print('Video Generating ....')
                 break
 
