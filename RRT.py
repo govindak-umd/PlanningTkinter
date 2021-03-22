@@ -6,7 +6,7 @@ from maps_utils import checkInObstacle, DistanceBetween, \
 from utils import GenerateVideo, generateRandomPoint
 import time
 import math
-from data_structures import Tree
+from math import sqrt, cos, sin, atan2
 
 
 class RRT:
@@ -31,7 +31,7 @@ class RRT:
         self.path = []
         self.goal_reached = False
         self.iterations = 2000
-        self.threshold = 7
+        self.threshold = 9
         self.video_count = 0
 
     def checkPathCollision(self, node_from, node_to):
@@ -51,8 +51,8 @@ class RRT:
         :rtype: Node
         """
         if DistanceBetween(node_from, node_to) < self.threshold:
-
             return node_to
+
         else:
             from_x, from_y = node_from.x, node_from.y
             to_x, to_y = node_to.x, node_to.y
@@ -63,39 +63,57 @@ class RRT:
 
             return new_point
 
+    def BackTracking(self, tree_dic, goal):
+        """
+        Function to get the BackTracking path
+        :param tree_dic: Tree Dictionary
+        :type tree_dic: Dictionary
+        """
+        curr_child = goal
+        for _ in range(1000):
+            for k, v in tree_dic.items():
+                if compareNodes(v, curr_child):
+                    cv2.line(map_canvas, (curr_child.x, curr_child.y),
+                             (k.x, k.y), [0, 0, 255], 1, cv2.LINE_AA)
+                    curr_child = k
+                    cv2.imwrite('Final_RRT.jpg', map_canvas)
+
+    def step_from_to(self, point_1, point_2):
+        if DistanceBetween(point_1, point_2) < self.threshold:
+            return point_2
+        else:
+            theta = atan2(point_2.y - point_1.y, point_2.x - point_1.x)
+            close_node = Node(int(point_1.x + self.threshold * cos(theta)),
+                              int(point_1.y + self.threshold * sin(theta)))
+            return close_node
+
     def SolveRRT(self, starting_vertex, goal_vertex):
-        """
-        Solve the graph from start to end through
-        Rapidly Exploring Random Trees (RRT)
-        :param starting_vertex: Starting Node
-        :type starting_vertex: Node
-        :param goal_vertex: Goal Node
-        :type goal_vertex: Node
-        """
-        self.vertices.add(starting_vertex)
 
-        # Initialize an empty tree
+        nodes = [starting_vertex]
+        graph_vertices = self.graph.getVertices()
 
-        rrt_tree = Tree()
-        rrt_tree.setStart(starting_vertex, starting_vertex)
-
+        path_dic = {}
         for i in range(self.iterations):
 
             random_generated_node = generateRandomPoint(map_size, map_canvas)
-            closest_node_to_random_point = rrt_tree.getNearestNode(random_generated_node)
-            new_point = self.getPointWithinThreshold(closest_node_to_random_point, random_generated_node)
+            random_generated_node = getSameNode(random_generated_node, graph_vertices)
 
-            if checkInObstacle(new_point, map_canvas):
-                continue
+            nn = nodes[0]
 
-            rrt_tree.setParent(closest_node_to_random_point, new_point)
+            for p in nodes:
+                if DistanceBetween(p, random_generated_node) < DistanceBetween(random_generated_node, nn):
+                    nn = p
 
-            cv2.line(map_canvas, (closest_node_to_random_point.x, closest_node_to_random_point.y),
-                     (new_point.x, new_point.y), path_colour, 1, cv2.LINE_AA)
+            new_node = self.step_from_to(nn, random_generated_node)
+            new_node = getSameNode(new_node, graph_vertices)
+
+            path_dic[nn] = new_node
+            nodes.append(new_node)
+
+            cv2.line(map_canvas, (new_node.x, new_node.y),
+                     (nn.x, nn.y), path_colour, 1, cv2.LINE_AA)
 
             cv2.imshow("Searching map", map_canvas)
-            if cv2.waitKey(20) & 0xFF == ord('q'):
-                break
 
             # To save the video
             len_number = len(str(self.video_count))
@@ -103,13 +121,13 @@ class RRT:
             # cv2.imwrite('RRT_Video_Images/' + number_name + str(self.video_count) + '.jpg', map_canvas)
             self.video_count += 1
 
-            if pointEncompassed(new_point, goal_vertex):
-                print('Total length of tree : ', rrt_tree.getTreeLength())
+            if cv2.waitKey(20) & 0xFF == ord('q'):
+                break
+
+            if pointEncompassed(new_node, goal_vertex):
                 print(' - - - GOAL FOUND - - - ')
-                print('The nodes are .. ')
-                printNode(new_point)
-                printNode(goal_vertex)
                 self.goal_reached = True
+                self.BackTracking(path_dic, new_node)
                 print('Video Generating ....')
                 break
 

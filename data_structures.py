@@ -79,8 +79,6 @@ class Tree:
         :return: None
         :rtype: None
         """
-        parent_name = getSameNode(parent_name)
-        child_name = getSameNode(child_name)
         self.tree[parent_name] = child_name
 
     def setStart(self, parent_name, child_name):
@@ -95,17 +93,15 @@ class Tree:
         """
         self.tree[parent_name] = child_name
 
-    def setParent(self, parent_name, child_name):
+    def getChildOfParent(self, parent_name):
         """
-        Sets the parent
+        Gets the child of the parent
         :param parent_name: Parent
         :type parent_name: Node
-        :param child_name: Child
-        :type child_name: Node
         :return: None
         :rtype: None
         """
-        self.tree[parent_name] = child_name
+        return self.tree[parent_name]
 
     def getTreeLength(self):
         """
