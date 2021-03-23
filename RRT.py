@@ -1,12 +1,12 @@
 import cv2
 from map import map_canvas, mouse_start_node, mouse_goal_node
-from graph import graph_generated, printNode, compareNodes, getSameNode, checkinThis
-from maps_utils import checkInObstacle, DistanceBetween, \
+from graph import graph_generated, getSameNode
+from maps_utils import DistanceBetween, \
     map_size, Node, pointEncompassed, path_colour
 from utils import GenerateVideo, generateRandomPoint
 import time
 import math
-from math import sqrt, cos, sin, atan2
+from math import cos, sin, atan2
 
 
 class RRT:
@@ -33,11 +33,6 @@ class RRT:
         self.iterations = 2000
         self.threshold = 9
         self.video_count = 0
-
-    def checkPathCollision(self, node_from, node_to):
-        # check if the path between node_from and
-        # node_end is collision free
-        pass
 
     def getPointWithinThreshold(self, node_from, node_to):
         """

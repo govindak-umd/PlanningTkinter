@@ -2,7 +2,6 @@ import cv2
 import os
 import random
 from maps_utils import checkInObstacle, Node
-from graph import getSameNode
 
 # Degrees of freedom for the robot
 # A 2 d.o.f robot can move in +x -x +y -y

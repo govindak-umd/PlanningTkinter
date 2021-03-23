@@ -1,12 +1,12 @@
 import cv2
 from map import map_canvas, mouse_start_node, mouse_goal_node
-from graph import graph_generated, printNode, compareNodes, getSameNode, checkinThis
-from maps_utils import checkInObstacle, DistanceBetween, \
+from graph import graph_generated, compareNodes, getSameNode
+from maps_utils import DistanceBetween, \
     map_size, pointEncompassed, path_colour, Node
 from utils import GenerateVideo, generateRandomPoint
 import time
 import math
-from math import sqrt, cos, sin, atan2
+from math import cos, sin, atan2
 
 
 class RRTStar:
