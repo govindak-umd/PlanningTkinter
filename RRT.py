@@ -102,8 +102,11 @@ class RRT:
             random_generated_node = generateRandomPoint(map_size, map_canvas)
             random_generated_node = getSameNode(random_generated_node, graph_vertices)
 
+            # nearest node is just initialized here
             nn = nodes[0]
 
+            # nearest node is re-written based on the
+            # distance
             for p in nodes:
                 if DistanceBetween(p, random_generated_node) < DistanceBetween(random_generated_node, nn):
                     nn = p
