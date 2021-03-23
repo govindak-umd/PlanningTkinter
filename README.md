@@ -7,8 +7,8 @@
 
 ## System Settings
 
-Windows 10
-Razer Blade 15
+- Windows 10
+- Razer Blade 15
 
 ## Project Description
 
