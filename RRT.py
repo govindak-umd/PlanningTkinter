@@ -28,7 +28,7 @@ class RRT:
         self.start_node = start_node
         self.goal_node = goal_node
         self.vertices = set()
-        self.path = []
+        self.nodes = []
         self.goal_reached = False
         self.iterations = 2000
         self.threshold = 9
@@ -93,7 +93,7 @@ class RRT:
         :rtype: None
         """
 
-        nodes = [starting_vertex]
+        self.nodes.append(starting_vertex)
         graph_vertices = self.graph.getVertices()
 
         path_dic = {}
@@ -103,11 +103,11 @@ class RRT:
             random_generated_node = getSameNode(random_generated_node, graph_vertices)
 
             # nearest node is just initialized here
-            nn = nodes[0]
+            nn = self.nodes[0]
 
             # nearest node is re-written based on the
             # distance
-            for p in nodes:
+            for p in self.nodes:
                 if DistanceBetween(p, random_generated_node) < DistanceBetween(random_generated_node, nn):
                     nn = p
 
@@ -115,12 +115,12 @@ class RRT:
             new_node = getSameNode(new_node, graph_vertices)
 
             path_dic[nn] = new_node
-            nodes.append(new_node)
+            self.nodes.append(new_node)
 
             cv2.line(map_canvas, (new_node.x, new_node.y),
                      (nn.x, nn.y), path_colour, 1, cv2.LINE_AA)
 
-            cv2.imshow("Searching map", map_canvas)
+            cv2.imshow("Searching map ... ", map_canvas)
 
             # To save the video
             len_number = len(str(self.video_count))

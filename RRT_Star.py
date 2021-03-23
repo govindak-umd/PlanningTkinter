@@ -28,11 +28,13 @@ class RRTStar:
         self.start_node = start_node
         self.goal_node = goal_node
         self.vertices = set()
-        self.path = []
+        self.node = []
         self.goal_reached = False
         self.iterations = 2000
         self.threshold = 9
         self.video_count = 0
+        # Exclusive param for RRTStar
+        self.radius = 5
 
     def checkPathCollision(self, node_from, node_to):
         # check if the path between node_from and
@@ -82,6 +84,14 @@ class RRTStar:
                               int(point_1.y + self.threshold * sin(theta)))
             return close_node
 
+    # Added for RRTStar
+
+    def chooseParent(self, current_node, new_node, nodes):
+        pass
+    # Added for RRTStar
+    def reWire(self, nodes,new_node):
+        pass
+
     def SolveRRTStar(self, starting_vertex, goal_vertex):
         """
         Solves RRTStar
@@ -93,7 +103,7 @@ class RRTStar:
         :rtype: None
         """
 
-        nodes = [starting_vertex]
+        self.node.append(starting_vertex)
         graph_vertices = self.graph.getVertices()
 
         path_dic = {}
@@ -103,9 +113,9 @@ class RRTStar:
             random_generated_node = getSameNode(random_generated_node, graph_vertices)
 
             # nearest node
-            nn = nodes[0]
+            nn = self.node[0]
 
-            for p in nodes:
+            for p in self.node:
                 if DistanceBetween(p, random_generated_node) < DistanceBetween(random_generated_node, nn):
                     nn = p
 
@@ -113,7 +123,7 @@ class RRTStar:
             new_node = getSameNode(new_node, graph_vertices)
 
             path_dic[nn] = new_node
-            nodes.append(new_node)
+            self.node.append(new_node)
 
             cv2.line(map_canvas, (new_node.x, new_node.y),
                      (nn.x, nn.y), path_colour, 1, cv2.LINE_AA)
