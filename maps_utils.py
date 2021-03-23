@@ -28,6 +28,10 @@ class Node:
         self.x = x
         self.y = y
 
+        # for RRTStar
+        self.cost = 0
+        self.parent = None
+
 
 # Check if a point is in a circle of
 # resolution unit radius

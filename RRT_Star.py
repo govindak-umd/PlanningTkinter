@@ -2,7 +2,7 @@ import cv2
 from map import map_canvas, mouse_start_node, mouse_goal_node
 from graph import graph_generated, printNode, compareNodes, getSameNode, checkinThis
 from maps_utils import checkInObstacle, DistanceBetween, \
-    map_size, Node, pointEncompassed, path_colour
+    map_size, pointEncompassed, path_colour, Node
 from utils import GenerateVideo, generateRandomPoint
 import time
 import math
@@ -86,10 +86,43 @@ class RRTStar:
 
     # Added for RRTStar
 
-    def chooseParent(self, current_node, new_node, nodes):
-        pass
+    def chooseNewParent(self, current_nearest_node, new_node):
+        """
+        Function to find a new node with a lower cost to go to.
+        This now becomes a newer nearest node, nn.
+        :param current_nearest_node: Current Nearest Node
+        :type current_nearest_node: Nde
+        :param new_node: New Interpolated Node
+        :type new_node: Node
+        :return: New Node, and a Nearest Node
+        :rtype: Node, Node
+        """
+
+        # Loops through all the node in the self.nodes list
+        # Hence this method gets slower as more and more nodes
+        # get added to the list
+
+        for p in self.nodes:
+
+            if DistanceBetween(p, new_node) < self.radius and \
+                    p.cost + DistanceBetween(p, new_node) < \
+                    current_nearest_node.cost + DistanceBetween(current_nearest_node, new_node):
+                current_nearest_node = p
+
+        # New interpolated nodes cost is changed
+
+        new_node.cost = current_nearest_node.cost + \
+                        DistanceBetween(current_nearest_node, new_node)
+
+        # That nodes parent is set as the current
+        # nearest node
+
+        new_node.parent = current_nearest_node
+
+        return new_node, current_nearest_node
+
     # Added for RRTStar
-    def reWire(self, nodes,new_node):
+    def reWire(self, nodes, new_node):
         pass
 
     def SolveRRTStar(self, starting_vertex, goal_vertex):
@@ -119,8 +152,14 @@ class RRTStar:
                 if DistanceBetween(p, random_generated_node) < DistanceBetween(random_generated_node, nn):
                     nn = p
 
+            nn = getSameNode(nn, graph_vertices)
+
             new_node = self.findClosestNode(nn, random_generated_node)
             new_node = getSameNode(new_node, graph_vertices)
+
+            # Choose the new parent
+
+            new_node, nn = self.chooseNewParent(nn, new_node)
 
             path_dic[nn] = new_node
             self.node.append(new_node)
