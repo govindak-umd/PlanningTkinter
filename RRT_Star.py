@@ -28,13 +28,14 @@ class RRTStar:
         self.start_node = start_node
         self.goal_node = goal_node
         self.vertices = set()
-        self.node = []
+        self.nodes = []
         self.goal_reached = False
         self.iterations = 2000
         self.threshold = 9
         self.video_count = 0
-        # Exclusive param for RRTStar
-        self.radius = 5
+        # Exclusive param for RRTStar.
+        # Tune the radius parameter accordingly
+        self.radius = 15
 
     def checkPathCollision(self, node_from, node_to):
         # check if the path between node_from and
@@ -98,6 +99,8 @@ class RRTStar:
         :rtype: Node, Node
         """
 
+        graph_vertices = self.graph.getVertices()
+
         # Loops through all the node in the self.nodes list
         # Hence this method gets slower as more and more nodes
         # get added to the list
@@ -107,12 +110,16 @@ class RRTStar:
             if DistanceBetween(p, new_node) < self.radius and \
                     p.cost + DistanceBetween(p, new_node) < \
                     current_nearest_node.cost + DistanceBetween(current_nearest_node, new_node):
+                print('Nearest node changed')
                 current_nearest_node = p
 
         # New interpolated nodes cost is changed
 
         new_node.cost = current_nearest_node.cost + \
                         DistanceBetween(current_nearest_node, new_node)
+
+        new_node = getSameNode(new_node, graph_vertices)
+        current_nearest_node = getSameNode(current_nearest_node, graph_vertices)
 
         # That nodes parent is set as the current
         # nearest node
@@ -122,8 +129,37 @@ class RRTStar:
         return new_node, current_nearest_node
 
     # Added for RRTStar
-    def reWire(self, nodes, new_node):
-        pass
+
+    def reWire(self, new_node):
+        """
+        Function exclusive to RRT Star to rewire the path
+        based on the new interpolated node, received from
+        the choose parent function
+
+        :param new_node: New interpolated Node
+        :type new_node: Node
+        :return: None
+        :rtype: None
+        """
+        graph_vertices = self.graph.getVertices()
+
+        for i in range(len(self.nodes)):
+            p = self.nodes[i]
+
+            # A check is done now to make sure that for every
+            # node in the node list, if the cost will
+            # decrease when rewired. If this happens the
+            # rewiring is done and the new vertex is replaced
+            # in the nodes list
+
+            if not compareNodes(p, new_node.parent) \
+                    and DistanceBetween(p, new_node) < self.radius \
+                    and new_node.cost + DistanceBetween(p, new_node) < p.cost:
+                p.parent = new_node
+                p.cost = new_node.cost + DistanceBetween(p, new_node)
+                p = getSameNode(p, graph_vertices)
+
+                self.nodes[i] = p
 
     def SolveRRTStar(self, starting_vertex, goal_vertex):
         """
@@ -136,7 +172,7 @@ class RRTStar:
         :rtype: None
         """
 
-        self.node.append(starting_vertex)
+        self.nodes.append(starting_vertex)
         graph_vertices = self.graph.getVertices()
 
         path_dic = {}
@@ -146,9 +182,9 @@ class RRTStar:
             random_generated_node = getSameNode(random_generated_node, graph_vertices)
 
             # nearest node
-            nn = self.node[0]
+            nn = self.nodes[0]
 
-            for p in self.node:
+            for p in self.nodes:
                 if DistanceBetween(p, random_generated_node) < DistanceBetween(random_generated_node, nn):
                     nn = p
 
@@ -158,11 +194,16 @@ class RRTStar:
             new_node = getSameNode(new_node, graph_vertices)
 
             # Choose the new parent
-
             new_node, nn = self.chooseNewParent(nn, new_node)
 
+            # Adding the node to the nodes list
+            self.nodes.append(new_node)
+
+            # rewire with this new node in mind
+            self.reWire(new_node)
+
             path_dic[nn] = new_node
-            self.node.append(new_node)
+            self.nodes.append(new_node)
 
             cv2.line(map_canvas, (new_node.x, new_node.y),
                      (nn.x, nn.y), path_colour, 1, cv2.LINE_AA)

@@ -46,12 +46,14 @@ Search Algorithms implemented so far :
 - RRT Search Algorithm
 
 <p align="center">
-  <img height="250" src="RRT_Video_Images/000159.jpg">
+  <img height="250" src="RRT_Video_Images/00087.jpg">
 </p>
 
 - RRT * Search Algorithm
 
-*I will add the image soon*
+<p align="center">
+  <img height="250" src="RRTStar_Video_Images/000362.jpg">
+</p>
 
 ## How to run the program
 
