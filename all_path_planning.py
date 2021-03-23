@@ -4,7 +4,7 @@ from Dijkstra import doDijkstra
 from BFS import doBFS
 from DFS import doDFS
 from RRT import doRRT
-from RRT_Star import doRRT_Star
+from RRT_Star import doRRTStar
 
 # Call tkinter Window and display all options
 
@@ -48,8 +48,8 @@ if __name__ == "__main__":
 
     # RRT * Path Planning Button
 
-    btn_RRT_Star = Button(root, text='Solve by RRT Path Planning', bd='10',
-                          command=doRRT_Star)
+    btn_RRT_Star = Button(root, text='Solve by RRT Star Path Planning', bd='10',
+                          command=doRRTStar)
 
     # Exit Button
 
